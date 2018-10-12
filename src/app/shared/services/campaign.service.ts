@@ -42,11 +42,10 @@ import { Observable } from 'rxjs';
       }
 
 
-//     id = SharedClass.userId;
-//     constructor(private http: HttpClient) {}
-//  getCampaigns(): Observable<Object> {
-//       return this.http.get(
-//         `${this.url}/Campaigns?access_token=${SharedClass.access_token}`
-//       );
-//     }
+
+ getCampaigns(): Observable<Object> {
+      return this.http.get(
+        `${this.url}/Campaigns?access_token=${SharedClass.access_token}`
+      );
+    }
    }

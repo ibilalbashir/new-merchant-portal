@@ -46,14 +46,14 @@ export class CreateComponent implements OnInit {
   payloadObj = {
     ambassadorIds: [],
     campaignType: '',
-    cateogoryId: '',
+    categoryId: '',
     description: '',
     discountAmount: {},
     discountType: {},
     discountUtilization: {ambassador: {}, user: {}},
     isApproved: false,
     merchantId: '',
-    noOfWeeks: '',
+    noOfWeeks: 0,
     startDate: '',
     termsAndConditions: '',
     title: '',
@@ -237,7 +237,7 @@ export class CreateComponent implements OnInit {
     SetPayload() {
       this.payloadObj.ambassadorIds = this.secondFormGroup.get('ambassadorIds').value;
       this.payloadObj.campaignType = this.firstFormGroup.get('campaignType').value;
-      this.payloadObj.cateogoryId = this.firstFormGroup.get('categoryId').value;
+      this.payloadObj.categoryId = this.firstFormGroup.get('categoryId').value;
       this.payloadObj.description = this.firstFormGroup.get('description').value;
       const discountAmount = {
         baseDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value,

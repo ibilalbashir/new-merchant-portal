@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 
 import { Component, OnInit } from '@angular/core';
 import { CampaignService } from '../../shared/services/campaign.service';
@@ -20,16 +21,19 @@ declare const $: any;
 export class ViewComponent implements OnInit {
   public dataTable: DataTable;
 
-  constructor(private router: Router, private getService: CampaignService ) {
+   $getCampaign: Observable<object>;
+
+  constructor(private router: Router, private campaignService: CampaignService ) {
 
    }
 
   ngOnInit() {
-    //  this.getService.getCampaigns();
+
+    this.$getCampaign  = this.campaignService.getCampaigns();
 
      this.dataTable = {
-      headerRow: [ 'Name', 'Position', 'Office', 'Age', 'Date', 'Actions' ],
-      footerRow: [ 'Name', 'Position', 'Office', 'Age', 'Start Date', 'Actions' ],
+      headerRow: [ 'Title', 'Description', 'Weeks', 'Start Date', 'Approved', 'Image' ],
+      footerRow: ['Title', 'Description', 'Weeks', 'Start Date', 'Approved', 'Image'  ],
 
       dataRows: []
    };
