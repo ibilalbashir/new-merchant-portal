@@ -48,4 +48,8 @@ import { Observable } from 'rxjs';
         `${this.url}/Campaigns?access_token=${SharedClass.access_token}`
       );
     }
+
+    verifyCouponCode(id, code): Observable<Object> {
+      return this.http.get(`${this.url}/Campaigns/${id}/verify-coupon?code=${code}`);
+    }
    }

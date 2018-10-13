@@ -189,7 +189,8 @@
                                                                 </mat-select>
                                                         </mat-form-field>
                                         </div>
-                                        </div>
+                                        </div> 
+                                
                                         <div class="row">
                                                 <div class="col-6">
                                                         <mat-form-field>
@@ -207,7 +208,10 @@
                                                         </mat-form-field>
 
                                                 </div>
-                                                <div class="col-12">
+                                        </div>
+                                </div>
+                                <div class="row">
+                                                <div class="col-12" *ngIf="ambChecked">
                                                 <mat-form-field>
                                                                 <mat-select placeholder="Select Ambassadors" formControlName="ambassadorIds" multiple>
                                                                   <mat-option *ngFor="let row of (ambassadorObj$ | async)" [value]="{'id' : row?.id,'referralCode' : row?.referralCode}">
@@ -216,9 +220,10 @@
                                                                 </mat-select>
                                                               </mat-form-field>
                                                         </div>
+                                                </div>
 
-                                        </div>
-                                </div>
+                                        
+                               
                                         <div>
                                                         <button class="btn btn-round btn-primary" mat-button matStepperPrevious>Back</button>
                                                         <button style="float: right" class="btn btn-round btn-primary" mat-button matStepperNext>Next</button>

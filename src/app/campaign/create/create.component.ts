@@ -37,6 +37,8 @@ export class CreateComponent implements OnInit {
   sepAmbPerksChecked = false;
   refChecked = false;
   sepRefPerksChecked  = false;
+  sameAmbPerksChecked = false;
+  sameRefPerksChecked = false;
   firstFormGroup: FormGroup
   secondFormGroup: FormGroup
   imageFormGroup: FormGroup
@@ -149,20 +151,24 @@ export class CreateComponent implements OnInit {
           console.log(event);
         }
         sepAmbPerksClick(event) {
-          this.sepAmbPerksChecked = !this.sepAmbPerksChecked;
+          this.sepAmbPerksChecked = true;
+          this.sameAmbPerksChecked = false;
           console.log(event);
         }
         sameAmbPerksClick(event) {
           this.sepAmbPerksChecked = false;
+          this.sameAmbPerksChecked = true;
         }
         refCheckBoxClick(event) {
           this.refChecked = !this.refChecked;
         }
         sepRefPerksClick(event) {
-          this.sepRefPerksChecked = !this.sepRefPerksChecked;
+          this.sepRefPerksChecked = true;
+          this.sameRefPerksChecked = false;
         }
         sameRefPerksClick(event) {
           this.sepRefPerksChecked = false;
+          this.sameRefPerksChecked = true;
         }
 
     discountTypesSelection(value) {
@@ -239,18 +245,56 @@ export class CreateComponent implements OnInit {
       this.payloadObj.campaignType = this.firstFormGroup.get('campaignType').value;
       this.payloadObj.categoryId = this.firstFormGroup.get('categoryId').value;
       this.payloadObj.description = this.firstFormGroup.get('description').value;
-      const discountAmount = {
+      if (this.sameAmbPerksChecked && this.sameRefPerksChecked) {
+        this.discountUtilization = {
+          ambassador :  {
+            type: this.firstFormGroup.get('discountUtilization').value,
+            number: this.firstFormGroup.get('number').value
+          },
+          user : {
+            type: this.firstFormGroup.get('discountUtilization').value,
+            number: this.firstFormGroup.get('number').value
+          }
+
+        }
+        this.discountType = {
+          baseDiscount: this.firstFormGroup.get('discountType').value,
+          ambassadorDiscount: this.firstFormGroup.get('discountType').value,
+          referralDiscount: this.firstFormGroup.get('discountType').value
+        }
+         this.discountAmount = {
+          baseDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value,
+
+          ambassadorDiscountAmount:  this.firstFormGroup.get('baseDiscountAmount').value,
+          referralDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value
+        }
+
+      } else if (this.sameAmbPerksChecked && !this.sameRefPerksChecked) {
+        this.discountUtilization = {
+          ambassador :  {
+            type: this.firstFormGroup.get('discountUtilization').value,
+            number: this.firstFormGroup.get('number').value
+          },
+          user : {
+            type: this.firstFormGroup.get('discountUtilization').value,
+            number: this.firstFormGroup.get('number').value
+          }
+
+        }
+        this.discountType = {
+          baseDiscount: this.firstFormGroup.get('discountType').value,
+          ambassadorDiscount: this.firstFormGroup.get('discountType').value,
+          referralDiscount: this.thirdFormGroup.get('referralDiscount').value
+        }
+        this.discountAmount = {
         baseDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value,
-        ambassadorDiscountAmount:  this.secondFormGroup.get('ambassadorDiscountAmount').value,
+
+        ambassadorDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value,
         referralDiscountAmount: this.thirdFormGroup.get('referralDiscountAmount').value
       }
-      const discountType = {
-        baseDiscount: this.firstFormGroup.get('discountType').value,
-        ambassadorDiscount: this.secondFormGroup.get('ambassadorDiscount').value,
-        referralDiscount: this.thirdFormGroup.get('referralDiscount').value
-      }
 
-      const discountUtilization = {
+      } else if (!this.sameAmbPerksChecked && this.sameRefPerksChecked) {
+         this.discountUtilization = {
         ambassador :  {
           type: this.secondFormGroup.get('ambDiscountUtilization').value,
           number: this.secondFormGroup.get('ambNumber').value
@@ -261,20 +305,80 @@ export class CreateComponent implements OnInit {
         }
 
       }
+        this.discountType = {
+          baseDiscount: this.firstFormGroup.get('discountType').value,
+          ambassadorDiscount: this.secondFormGroup.get('ambassadorDiscount').value,
+          referralDiscount: this.firstFormGroup.get('discountType').value
+        }
+        this.discountAmount = {
+        baseDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value,
+
+        ambassadorDiscountAmount:  this.secondFormGroup.get('ambassadorDiscountAmount').value,
+        referralDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value
+      }
+
+      } else if (!this.sameAmbPerksChecked && !this.sameRefPerksChecked) {
+        this.discountUtilization = {
+          ambassador :  {
+            type: this.secondFormGroup.get('ambDiscountUtilization').value,
+            number: this.secondFormGroup.get('ambNumber').value
+          },
+          user : {
+            type: this.firstFormGroup.get('discountUtilization').value,
+            number: this.firstFormGroup.get('number').value
+          }
+
+        }
+        this.discountType = {
+          baseDiscount: this.firstFormGroup.get('discountType').value,
+          ambassadorDiscount: this.secondFormGroup.get('ambassadorDiscount').value,
+          referralDiscount: this.thirdFormGroup.get('referralDiscount').value
+        }
+         this.discountAmount = {
+        baseDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value,
+
+        ambassadorDiscountAmount:  this.secondFormGroup.get('ambassadorDiscountAmount').value,
+        referralDiscountAmount: this.thirdFormGroup.get('referralDiscountAmount').value
+      }
+
+      }
+      // const discountAmount = {
+      //   baseDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value,
+
+      //   ambassadorDiscountAmount:  this.secondFormGroup.get('ambassadorDiscountAmount').value,
+      //   referralDiscountAmount: this.thirdFormGroup.get('referralDiscountAmount').value
+      // }
+      // const discountType = {
+      //   baseDiscount: this.firstFormGroup.get('discountType').value,
+      //   ambassadorDiscount: this.secondFormGroup.get('ambassadorDiscount').value,
+      //   referralDiscount: this.thirdFormGroup.get('referralDiscount').value
+      // }
+
+      // const discountUtilization = {
+      //   ambassador :  {
+      //     type: this.secondFormGroup.get('ambDiscountUtilization').value,
+      //     number: this.secondFormGroup.get('ambNumber').value
+      //   },
+      //   user : {
+      //     type: this.firstFormGroup.get('discountUtilization').value,
+      //     number: this.firstFormGroup.get('number').value
+      //   }
+
+      // }
       // this.discountAmount['baseDiscountAmount'] = this.firstFormGroup.get('baseDiscountAmount').value;
       // this.discountAmount.ambassadorDiscountAmount = this.secondFormGroup.get('ambassadorDiscountAmount').value;
       // this.discountAmount.referralDiscountAmount  = this.thirdFormGroup.get('referralDiscountAmount').value;
-       this.payloadObj.discountAmount = discountAmount;
+       this.payloadObj.discountAmount = this.discountAmount;
       // this.discountType.baseDiscount = this.firstFormGroup.get('discountType').value;
       // this.discountType.ambassadorDiscount = this.secondFormGroup.get('ambassadorDiscount').value;
       // this.discountType.referralDiscount = this.thirdFormGroup.get('referralDiscount').value;
-       this.payloadObj.discountType = discountType;
+       this.payloadObj.discountType = this.discountType;
       // this.ambassador.type = this.secondFormGroup.get('ambDiscountUtilization').value;
       // this.ambassador.number = this.secondFormGroup.get('abNumber').value;
-       this.payloadObj.discountUtilization.ambassador = discountUtilization.ambassador;
+       this.payloadObj.discountUtilization.ambassador = this.discountUtilization.ambassador;
       // this.user.type = this.firstFormGroup.get('discountUtilization').value;
       // this.user.number = this.firstFormGroup.get('number').value;
-       this.payloadObj.discountUtilization.user = discountUtilization.user;
+       this.payloadObj.discountUtilization.user = this.discountUtilization.user;
        this.payloadObj.isApproved = false;
        const temp = JSON.parse(localStorage.getItem('user'));
        this.payloadObj.merchantId =  temp['userId'] ;

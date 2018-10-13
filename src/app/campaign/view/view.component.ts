@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { CampaignService } from '../../shared/services/campaign.service';
 import { Router } from '@angular/router';
 import { routerNgProbeToken } from '@angular/router/src/router_module';
+import swal from 'sweetalert2';
 
 declare interface DataTable {
   headerRow: string[];
@@ -83,5 +84,96 @@ export class ViewComponent implements OnInit {
   CreateCampaign() {
   this.router.navigateByUrl('/main/campaign/create');
   }
+  notApprovedMessage() {
+    swal({
+      type: 'error',
+      text: 'Not Approved yet, Contact admins',
+      title: 'Not Approved Yet'
+
+    })
+  }
+
+  verifyCoupnCodeFn(campaignId) {
+    console.log('-----------------')
+    console.log(campaignId);
+
+    swal({
+      title: 'Enter Coupon Code',
+      html:
+        '<div class="form-group">' +
+        '<input id="input-field" type="text" class="form-control" />' +
+        '</div>',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Validate',
+      cancelButtonText: 'Cancel',
+      confirmButtonClass: 'btn btn-success',
+      cancelButtonClass: 'btn btn-danger',
+      buttonsStyling: false
+    }).then(result => {
+      if (result.value) {
+        this.campaignService.verifyCouponCode(campaignId, $('#input-field').val()).subscribe(
+          res => {
+            swal({
+              title: 'coupon code verified',
+              type: 'success',
+              confirmButtonClass: 'btn btn-success',
+              buttonsStyling: false
+            }).catch(swal.noop);
+
+
+          }, err => {
+            swal({
+              title: 'NOT verified',
+              text: err['message'],
+              type: 'error',
+              confirmButtonClass: 'btn btn-info',
+              buttonsStyling: false
+            }).catch(swal.noop);
+          }
+        )
+
+
+      } else {
+        swal({
+          title: 'Cancelled',
+          text: 'you did not run validation',
+          type: 'error',
+          confirmButtonClass: 'btn btn-info',
+          buttonsStyling: false
+        }).catch(swal.noop);
+      }
+    });
+
+  //   swal({
+  //     title: 'Input something',
+  //     html: '<div class="form-group">' +
+  //         '<input id="code" type="text" class="form-control" />' +
+  //         '</div>',
+  //     showCancelButton: true,
+  //     confirmButtonClass: 'btn btn-success',
+  //     cancelButtonClass: 'btn btn-danger',
+  //     buttonsStyling: false
+  // }).then(function(result) {
+
+  //   this.campaignService.verifyCouponCode(campaignId, $('#input-field').val()).subscribe(
+  //     res => {
+  //       swal(res.message);
+
+  //     }, err => {
+  //       swal(err.message);
+  //     }
+  //   )
+  //     swal({
+  //         type: 'success',
+  //         html: 'You entered: <strong>' +
+  //             $('#input-field').val() +
+  //             '</strong>',
+  //         confirmButtonClass: 'btn btn-success',
+  //         buttonsStyling: false
+
+  //     })
+  // }).catch(swal.noop)
+   }
 
 }
