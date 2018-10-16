@@ -19,7 +19,7 @@ export class AuthService {
 
 
     logIn(obj): Observable<Object> {
-        return this.http.post(`${this.url}/Merchants/login`, obj);
+        return this.http.post(`${this.url}/Merchants/login?include=user`, obj);
     }
 
     isLoggedIn() {

@@ -1,3 +1,4 @@
+import { swal } from 'sweetalert2';
 import { CampaignService } from './../../shared/services/campaign.service';
 import { Component, OnInit } from '@angular/core';
 import {  Validators, FormGroup, FormBuilder } from '@angular/forms';
@@ -39,6 +40,7 @@ export class CreateComponent implements OnInit {
   sepRefPerksChecked  = false;
   sameAmbPerksChecked = false;
   sameRefPerksChecked = false;
+  minDate = new Date();
   firstFormGroup: FormGroup
   secondFormGroup: FormGroup
   imageFormGroup: FormGroup
@@ -392,10 +394,10 @@ export class CreateComponent implements OnInit {
         res => {
           const id = res['id'];
           this.imageFunc(id);
-          alert('camapign created');
+          swal('Campaign Created', 'Campaign Created Successfully', 'success');
 
         }, err => {
-          alert('err creating campagin');
+          swal('Error', 'Something Went Wrong', 'error');
 
         }
       );

@@ -78,11 +78,12 @@ export class LoginComponent implements OnInit, OnDestroy {
             res => {
                 console.log(res);
                 SharedClass.access_token = res['id'];
-                console.log(SharedClass.access_token)
-
-
-
+                console.log(SharedClass.access_token);
+                // SharedClass.merchant_name = res['user'].name;
+// localStorage.setItem('hola', 'test');
                 localStorage.setItem('user', JSON.stringify(res));
+               localStorage.setItem('merchant_name', res['user'].name);
+                console.log(res['user'].name);
                 swal({
                     title: 'Logged In',
                     type: 'success',

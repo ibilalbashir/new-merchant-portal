@@ -3,13 +3,14 @@ import { ROUTES } from '../.././sidebar/sidebar.component';
 import { Router, ActivatedRoute, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+declare const $: any;
 const misc: any = {
     navbar_menu_visible: 0,
     active_collapse: true,
     disabled_collapse_init: 0,
 };
 
-declare var $: any;
+// declare var $: any;
 @Component({
     selector: 'app-navbar-cmp',
     templateUrl: 'navbar.component.html'
@@ -26,12 +27,12 @@ export class NavbarComponent implements OnInit {
 
     @ViewChild('app-navbar-cmp') button: any;
 
-    constructor(location: Location, private renderer: Renderer, private element: ElementRef, private router: Router,) {
+    constructor(location: Location, private renderer: Renderer, private element: ElementRef, private router: Router, ) {
         this.location = location;
         this.nativeElement = element.nativeElement;
         this.sidebarVisible = false;
     }
-    minimizeSidebar(){
+    minimizeSidebar() {
       const body = document.getElementsByTagName('body')[0];
 
       if (misc.sidebar_mini_active === true) {
@@ -56,7 +57,7 @@ export class NavbarComponent implements OnInit {
           clearInterval(simulateWindowResize);
       }, 1000);
     }
-    hideSidebar(){
+    hideSidebar() {
       const body = document.getElementsByTagName('body')[0];
       const sidebar = document.getElementsByClassName('sidebar')[0];
 
@@ -117,7 +118,7 @@ export class NavbarComponent implements OnInit {
     sidebarOpen() {
         const toggleButton = this.toggleButton;
         const body = document.getElementsByTagName('body')[0];
-        setTimeout(function(){
+        setTimeout(function() {
             toggleButton.classList.add('toggled');
         }, 500);
         body.classList.add('nav-open');
@@ -138,8 +139,9 @@ export class NavbarComponent implements OnInit {
         }
         const body = document.getElementsByTagName('body')[0];
 
-        var $toggle = document.getElementsByClassName('navbar-toggler')[0];
-        if (this.mobile_menu_visible == 1) {
+        const $toggle = document.getElementsByClassName('navbar-toggler')[0];
+        const $layer = document.createElement('div');
+        if (this.mobile_menu_visible === 1) {
             // $('html').removeClass('nav-open');
             body.classList.remove('nav-open');
             if ($layer) {
@@ -156,13 +158,13 @@ export class NavbarComponent implements OnInit {
                 $toggle.classList.add('toggled');
             }, 430);
 
-            var $layer = document.createElement('div');
+
             $layer.setAttribute('class', 'close-layer');
 
 
             if (body.querySelectorAll('.main-panel')) {
                 document.getElementsByClassName('main-panel')[0].appendChild($layer);
-            }else if (body.classList.contains('off-canvas-sidebar')) {
+            } else if (body.classList.contains('off-canvas-sidebar')) {
                 document.getElementsByClassName('wrapper-full-page')[0].appendChild($layer);
             }
 
@@ -170,7 +172,7 @@ export class NavbarComponent implements OnInit {
                 $layer.classList.add('visible');
             }, 100);
 
-            $layer.onclick = function() { //asign a function
+            $layer.onclick = function() { // asign a function
               body.classList.remove('nav-open');
               this.mobile_menu_visible = 0;
               $layer.classList.remove('visible');
@@ -187,13 +189,13 @@ export class NavbarComponent implements OnInit {
     }
 
     getTitle() {
-        let titlee: any = this.location.prepareExternalUrl(this.location.path());
+        const titlee: any = this.location.prepareExternalUrl(this.location.path());
         for (let i = 0; i < this.listTitles.length; i++) {
-            if (this.listTitles[i].type === "link" && this.listTitles[i].path === titlee) {
+            if (this.listTitles[i].type === 'link' && this.listTitles[i].path === titlee) {
                 return this.listTitles[i].title;
-            } else if (this.listTitles[i].type === "sub") {
+            } else if (this.listTitles[i].type === 'sub') {
                 for (let j = 0; j < this.listTitles[i].children.length; j++) {
-                    let subtitle = this.listTitles[i].path + '/' + this.listTitles[i].children[j].path;
+                    const subtitle = this.listTitles[i].path + '/' + this.listTitles[i].children[j].path;
                     if (subtitle === titlee) {
                         return this.listTitles[i].children[j].title;
                     }

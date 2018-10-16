@@ -1,3 +1,4 @@
+import { SharedClass } from 'app/shared/services/SharedClass';
 import { Component, OnInit } from '@angular/core';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { Router } from '@angular/router';
@@ -124,6 +125,7 @@ export const ROUTES: RouteInfo[] = [{
 
 export class SidebarComponent implements OnInit {
     public menuItems: any[];
+    merchant_name = localStorage.getItem('merchant_name')
 
     constructor(private router: Router) {
 

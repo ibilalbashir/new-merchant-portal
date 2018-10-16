@@ -46,7 +46,7 @@
                                             </div>
                                             <div class="col-4">
                                                         <mat-form-field>
-                                                                <input matInput formControlName="startDate" [matDatepicker]="dp3" placeholder="Strating date"  (click)= "dp3.open()">
+                                                                <input [min]="minDate" matInput formControlName="startDate" [matDatepicker]="dp3" placeholder="Strating date"  (click)= "dp3.open()">
                                                                 <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
                                                                 <mat-datepicker #dp3 disabled="false"></mat-datepicker>
                                                          </mat-form-field>
