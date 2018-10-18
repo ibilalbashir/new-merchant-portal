@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+<div class="main-content">
+  <div class="container-fluid">
+    <!-- <input type="button" class="btn btn-primary" value="Create campagin" (click) = "CreateCampaign()"> -->
+    <div class="row">
+
+      <div class="col-3" *ngFor="let row of $getCampaign | async">
+        <app-campaign-card [data]="row"></app-campaign-card>
+
+      </div>
+
+
+      <!-- end row -->
+    </div>
+  </div>

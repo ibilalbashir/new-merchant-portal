@@ -7,9 +7,13 @@ import { CommonModule } from '@angular/common';
 import { CampaignRoutingModule } from './campaign-routing.module';
 import { CreateComponent } from './create/create.component';
 import { ViewComponent } from './view/view.component';
+// tslint:disable-next-line:max-line-length
 import { MatInputModule, MatFormFieldModule, MatStepperModule, MatOptionModule, MatSelectModule, MatDatepickerModule, MatCheckbox, MatCheckboxModule, MatRadioModule } from '@angular/material';
 import { MdModule } from 'app/md/md.module';
 import { SharedModule } from 'app/shared/shared.module';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { ArchiveComponent } from './archive/archive.component';
+import { CurrentComponent } from './current/current.component';
 // import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
@@ -27,8 +31,10 @@ import { SharedModule } from 'app/shared/shared.module';
     MatCheckboxModule,
     MatRadioModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    ImageCropperModule
+
   ],
-  declarations: [CreateComponent, ViewComponent]
+  declarations: [CreateComponent, ViewComponent, ArchiveComponent, CurrentComponent]
 })
 export class CampaignModule { }

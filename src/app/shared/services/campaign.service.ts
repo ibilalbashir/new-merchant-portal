@@ -4,54 +4,65 @@ import { environment } from 'environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-
-
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root'
+})
+export class CampaignService {
+  url = environment.url;
+  object = JSON.parse(localStorage.getItem('user'));
+  merchantId = this.object['userId'];
+  currentDate = new Date();
 
-   export class CampaignService {
+  constructor(private http: HttpClient) {
+    // console.log('------------')
+    // console.log(this.access_token);
+    // console.log('-----------------')
+  }
 
-    url = environment.url;
-    object = JSON.parse(localStorage.getItem('user'))
-    merchantId = this.object['userId'];
+  getCategories(): Observable<object> {
+    return this.http.get(`${this.url}/Categories`);
+  }
+  getAmbassadors(): Observable<object> {
+    return this.http.get(
+      `${this.url}/Uninamausers/get-ambassadors?access_token=${
+        SharedClass.access_token
+      }`
+    );
+  }
+  createCampaign(obj): Observable<Object> {
+    return this.http.post(
+      `${this.url}/Campaigns?access_token=${SharedClass.access_token}`,
+      obj
+    );
+  }
+  uploadImage(obj): Observable<Object> {
+    return this.http.post(
+      `${this.url}/Attachments/upload?access_token=${SharedClass.access_token}`,
+      obj
+    );
+  }
 
-     constructor(private http: HttpClient) {
-        // console.log('------------')
-        // console.log(this.access_token);
-        // console.log('-----------------')
-     }
+  getCampaigns(): Observable<Object> {
+    console.log(this.merchantId);
+    return this.http.get(
+      `${this.url}/Merchants/${this.merchantId}/campaigns?access_token=${
+        SharedClass.access_token
+      }`
+    );
+  }
+  getArchiveCampaigns(): Observable<Object> {
+    return this.http.get(
+      `${this.url}/Merchants/${
+        this.merchantId
+      }/campaigns?filter[where][endDate]<${this.currentDate}&access_token=${
+        SharedClass.access_token
+      }`
+    );
+  }
 
-      getCategories(): Observable < object > {
-          return this.http.get(`${this.url}/Categories`);
-      }
-      getAmbassadors(): Observable < object > {
-
-        return this.http.get(`${this.url}/Uninamausers/get-ambassadors?access_token=${SharedClass.access_token}`);
-      }
-      createCampaign(obj): Observable<Object> {
-        return this.http.post(
-          `${this.url}/Campaigns?access_token=${SharedClass.access_token}`,
-          obj
-        );
-      }
-      uploadImage( obj): Observable<Object> {
-        return this.http.post(
-          `${this.url}/Attachments/upload?access_token=${SharedClass.access_token}`,
-          obj
-        );
-      }
-
-
-
- getCampaigns(): Observable<Object> {
-   console.log(this.merchantId);
-      return this.http.get(
-        `${this.url}/Merchants/${this.merchantId}/campaigns?access_token=${SharedClass.access_token}`
-      );
-    }
-
-    verifyCouponCode(id, code): Observable<Object> {
-      return this.http.get(`${this.url}/Campaigns/${id}/verify-coupon?code=${code}`);
-    }
-   }
+  verifyCouponCode(id, code): Observable<Object> {
+    return this.http.get(
+      `${this.url}/Campaigns/${id}/verify-coupon?code=${code}`
+    );
+  }
+}
