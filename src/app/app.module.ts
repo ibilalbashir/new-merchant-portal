@@ -52,6 +52,7 @@ import { AppRoutes } from './app.routing';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { CampaignCardComponent } from './shared/campaign-card/campaign-card.component';
 
 @NgModule({
   exports: [
@@ -86,7 +87,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule
-  ]
+  ],
+  declarations: []
 })
 export class MaterialModule {}
 

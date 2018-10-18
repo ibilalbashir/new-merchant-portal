@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import {Router} from '@angular/router'
 import swal from 'sweetalert2';
@@ -20,8 +20,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     private sidebarVisible: boolean;
     private nativeElement: Node;
     loginForm: FormGroup;
+    loginBtnStatus = false;
 
-    constructor(private router: Router, private element: ElementRef, private services: AuthService) {
+    constructor(private formBuilder: FormBuilder, private router: Router, private element: ElementRef, private services: AuthService) {
         this.nativeElement = element.nativeElement;
         this.sidebarVisible = false;
         const user = localStorage.getItem('user');
@@ -32,10 +33,20 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.loginForm = new FormGroup({
-            email: new FormControl(),
-            password: new FormControl()
-        })
+        // this.loginForm = new FormGroup({
+        //     email: new FormControl(),
+        //     password: new FormControl()
+        // })
+        this.loginForm = this.formBuilder.group({
+            email: ['', Validators.required, Validators.email],
+            password: ['', Validators.required],
+
+
+
+          })
+
+
+
 
 
         const navbar: HTMLElement = this.element.nativeElement;
@@ -49,6 +60,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             card.classList.remove('card-hidden');
         }, 700);
     }
+
+
     sidebarToggle() {
         const toggleButton = this.toggleButton;
         const body = document.getElementsByTagName('body')[0];
@@ -72,8 +85,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     onSubmit() {
-        console.log(this.loginForm.value);
-
+        // console.log(this.loginForm.value);
+        if (this.loginForm.valid) {
+            this.loginBtnStatus = true;
+        }
         this.services.logIn(this.loginForm.value).subscribe(
             res => {
                 console.log(res);
@@ -83,7 +98,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 // localStorage.setItem('hola', 'test');
                 localStorage.setItem('user', JSON.stringify(res));
                localStorage.setItem('merchant_name', res['user'].name);
-                console.log(res['user'].name);
+                 console.log(res['user'].name);
                 swal({
                     title: 'Logged In',
                     type: 'success',

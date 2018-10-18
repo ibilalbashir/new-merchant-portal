@@ -93,57 +93,6 @@ export class ViewComponent implements OnInit {
     })
   }
 
-  verifyCoupnCodeFn(campaignId) {
-    console.log('-----------------')
-    console.log(campaignId);
-
-    swal({
-      title: 'Enter Coupon Code',
-      html:
-        '<div class="form-group">' +
-        '<input id="input-field" type="text" class="form-control" />' +
-        '</div>',
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Validate',
-      cancelButtonText: 'Cancel',
-      confirmButtonClass: 'btn btn-success',
-      cancelButtonClass: 'btn btn-danger',
-      buttonsStyling: false
-    }).then(result => {
-      if (result.value) {
-        this.campaignService.verifyCouponCode(campaignId, $('#input-field').val()).subscribe(
-          res => {
-            swal({
-              title: 'coupon code verified',
-              type: 'success',
-              confirmButtonClass: 'btn btn-success',
-              buttonsStyling: false
-            }).catch(swal.noop);
-
-
-          }, err => {
-            swal({
-              title: 'NOT verified',
-              text: err['message'],
-              type: 'error',
-              confirmButtonClass: 'btn btn-info',
-              buttonsStyling: false
-            }).catch(swal.noop);
-          }
-        )
-
-
-      } else {
-        swal({
-          title: 'Cancelled',
-          text: 'you did not run validation',
-          type: 'error',
-          confirmButtonClass: 'btn btn-info',
-          buttonsStyling: false
-        }).catch(swal.noop);
-      }
-    });
 
   //   swal({
   //     title: 'Input something',
@@ -174,6 +123,6 @@ export class ViewComponent implements OnInit {
 
   //     })
   // }).catch(swal.noop)
-   }
+
 
 }

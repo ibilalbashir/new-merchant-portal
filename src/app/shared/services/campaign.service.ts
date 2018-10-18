@@ -13,8 +13,9 @@ import { Observable } from 'rxjs';
    export class CampaignService {
 
     url = environment.url;
-    // object = JSON.parse(localStorage.getItem('user'))
-    // access_token = this.object['id'];
+    object = JSON.parse(localStorage.getItem('user'))
+    merchantId = this.object['userId'];
+
      constructor(private http: HttpClient) {
         // console.log('------------')
         // console.log(this.access_token);
@@ -44,8 +45,9 @@ import { Observable } from 'rxjs';
 
 
  getCampaigns(): Observable<Object> {
+   console.log(this.merchantId);
       return this.http.get(
-        `${this.url}/Campaigns?access_token=${SharedClass.access_token}`
+        `${this.url}/Merchants/${this.merchantId}/campaigns?access_token=${SharedClass.access_token}`
       );
     }
 

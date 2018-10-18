@@ -1,3 +1,5 @@
+import { CampaignCardComponent } from './../shared/campaign-card/campaign-card.component';
+import { MaterialModule } from './../app.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -6,6 +8,9 @@ import { CampaignRoutingModule } from './campaign-routing.module';
 import { CreateComponent } from './create/create.component';
 import { ViewComponent } from './view/view.component';
 import { MatInputModule, MatFormFieldModule, MatStepperModule, MatOptionModule, MatSelectModule, MatDatepickerModule, MatCheckbox, MatCheckboxModule, MatRadioModule } from '@angular/material';
+import { MdModule } from 'app/md/md.module';
+import { SharedModule } from 'app/shared/shared.module';
+// import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -20,7 +25,9 @@ import { MatInputModule, MatFormFieldModule, MatStepperModule, MatOptionModule, 
     MatSelectModule,
     MatDatepickerModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MaterialModule,
+    SharedModule
   ],
   declarations: [CreateComponent, ViewComponent]
 })

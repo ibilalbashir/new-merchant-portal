@@ -1,8 +1,8 @@
 <div class="container" style="margin-top: 80px">
        <div class="row">
            <div class="col-12">
-                <mat-horizontal-stepper>
-                        <mat-step >
+                <mat-horizontal-stepper linear #stepper>
+                        <mat-step [stepControl]="firstFormGroup" [optional]="isOptional">
                                 <div class="row">
                                         <div class=col-8>
                             <form [formGroup]="firstFormGroup">
@@ -151,7 +151,7 @@
                                                 <button class="btn btn-round btn-primary" mat-button matStepperNext>Next</button>
                                               </div>
                         </mat-step>
-                        <mat-step >
+                        <mat-step [stepControl]="secondFormGroup" [optional]="isOptional">
                                 <form [formGroup]="secondFormGroup">
                                                 <ng-template matStepLabel>Ambassader Perks</ng-template>
                                                 <div class=row>
@@ -218,6 +218,7 @@
                                                                     {{row?.firstName}} {{row?.lastName}}
                                                                   </mat-option>
                                                                 </mat-select>
+
                                                               </mat-form-field>
                                                         </div>
                                                 </div>
@@ -231,13 +232,13 @@
                                 </form>
                             
                         </mat-step>
-                        <mat-step>
+                        <mat-step [stepControl]="thirdFormGroup" [optional]="isOptional">
                                 <div class="container">
                         <form [formGroup]="thirdFormGroup">
                                 
                                 <ng-template matStepLabel>Referral Perks</ng-template>
                                 <div class="row">
-                                <mat-checkbox  (change)="refCheckBoxClick($event.checked)">Do you want referrals for your cammpaign?</mat-checkbox>
+                                <mat-checkbox *ngIf="ambChecked"  (change)="refCheckBoxClick($event.checked)">Do you want referrals for your cammpaign?</mat-checkbox>
                                 </div>
                                 <div class="row" *ngIf="refChecked">
                                 <mat-radio-group>

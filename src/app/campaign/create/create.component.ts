@@ -1,4 +1,4 @@
-import { swal } from 'sweetalert2';
+import swal from 'sweetalert2';
 import { CampaignService } from './../../shared/services/campaign.service';
 import { Component, OnInit } from '@angular/core';
 import {  Validators, FormGroup, FormBuilder } from '@angular/forms';
@@ -24,6 +24,7 @@ interface FileReaderEvent extends Event {
 
 
 export class CreateComponent implements OnInit {
+  isOptional = false;
   fileName: any;
   base64: string;
   file: any;
@@ -128,7 +129,7 @@ export class CreateComponent implements OnInit {
       ambDiscountUtilization: [''],
       ambassadorDiscount: [''],
       ambassadorDiscountAmount: [''],
-      ambassadorIds: ['']
+      ambassadorIds: [ ]
 
     })
     this.imageFormGroup = formBuilder.group({
@@ -149,7 +150,27 @@ export class CreateComponent implements OnInit {
           console.log(val);
         }
         ambCheckBoxCilck(event) {
-          this.ambChecked = !this.ambChecked;
+          // this.ambChecked = !this.ambChecked;
+          this.ambChecked = event;
+          if (!event) {
+            this.sepAmbPerksChecked = false;
+            this.refChecked = false;
+            this.sepRefPerksChecked = false;
+            this.secondFormGroup.reset();
+            this.thirdFormGroup.reset();
+          }
+      //    if (!event) {
+      //       this.secondFormGroup.get('ambDiscountUtilization').value.clear();
+      // //       this.secondFormGroup.get('ambNumber').reset();
+      // //       this.secondFormGroup.get('ambassadorDiscount').reset();
+
+      // // // //             ambDiscountUtilization: [''],
+      // // // // ambassadorDiscount: [''],
+      // // // // ambassadorDiscountAmount: [''],
+      // // // // ambassadorIds: [ ]
+
+      //   }
+
           console.log(event);
         }
         sepAmbPerksClick(event) {
@@ -162,7 +183,11 @@ export class CreateComponent implements OnInit {
           this.sameAmbPerksChecked = true;
         }
         refCheckBoxClick(event) {
-          this.refChecked = !this.refChecked;
+          this.refChecked = event;
+          if (!event) {
+            this.sepRefPerksChecked = false;
+            this.thirdFormGroup.reset();
+          }
         }
         sepRefPerksClick(event) {
           this.sepRefPerksChecked = true;
@@ -413,10 +438,10 @@ export class CreateComponent implements OnInit {
       };
       this.campaignService.uploadImage(this.imageObj).subscribe(
         res => {
-          alert('image uploaded successfully')
+          console.log('Image uploaded successfully')
 
         }, err => {
-          alert('error uploading image')
+          console.log('image upload errer')
         }
       )
     }
