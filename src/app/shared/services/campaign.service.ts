@@ -11,7 +11,8 @@ export class CampaignService {
   url = environment.url;
   object = JSON.parse(localStorage.getItem('user'));
   merchantId = this.object['userId'];
-  currentDate = new Date();
+  currentDate = new Date().toISOString();
+  categoryName: any;
 
   constructor(private http: HttpClient) {
     // console.log('------------')
@@ -21,6 +22,12 @@ export class CampaignService {
 
   getCategories(): Observable<object> {
     return this.http.get(`${this.url}/Categories`);
+  }
+  getCategoryById(id): Observable<object> {
+    console.log('this is campaign id', id);
+    return (this.categoryName = this.http.get(
+      `${this.url}/Categories/${id}?access_token=${SharedClass.access_token}`
+    ));
   }
   getAmbassadors(): Observable<object> {
     return this.http.get(
@@ -42,19 +49,44 @@ export class CampaignService {
     );
   }
 
+  getCampaignById(id): Observable<Object> {
+    return this.http.get(
+      `${this.url}/Campaigns/${id}?access_token=${SharedClass.access_token}`
+    );
+  }
+
   getCampaigns(): Observable<Object> {
     console.log(this.merchantId);
     return this.http.get(
-      `${this.url}/Merchants/${this.merchantId}/campaigns?access_token=${
+      `${this.url}/Merchants/${
+        this.merchantId
+      }/campaigns?filter[where][endDate][gt]=${
+        this.currentDate
+      }&filter[where][isApproved]=true&filter[where][isRejected]=false&access_token=${
         SharedClass.access_token
       }`
     );
   }
   getArchiveCampaigns(): Observable<Object> {
+    console.log('current date variable', this.currentDate);
+
     return this.http.get(
       `${this.url}/Merchants/${
         this.merchantId
-      }/campaigns?filter[where][endDate]<${this.currentDate}&access_token=${
+      }/campaigns?filter[where][or][0][endDate][lt]=${
+        this.currentDate
+      }&filter[where][or][1][isRejected]=true&access_token=${
+        SharedClass.access_token
+      }`
+    );
+  }
+  getPendingCampaigns(): Observable<Object> {
+    return this.http.get(
+      `${this.url}/Merchants/${
+        this.merchantId
+      }/campaigns?filter[where][endDate][gt]=${
+        this.currentDate
+      }&filter[where][isApproved]=false&filters[where][isRejected]=false&access_token=${
         SharedClass.access_token
       }`
     );

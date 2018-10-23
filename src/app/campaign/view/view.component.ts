@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { CampaignService } from '../../shared/services/campaign.service';
 import { Router } from '@angular/router';
 import { routerNgProbeToken } from '@angular/router/src/router_module';
-import swal from 'sweetalert2';
 
 declare interface DataTable {
   headerRow: string[];
@@ -102,34 +101,4 @@ export class ViewComponent implements OnInit {
 
     $('.card .material-datatables label').addClass('form-group');
   }
-
-  //   swal({
-  //     title: 'Input something',
-  //     html: '<div class="form-group">' +
-  //         '<input id="code" type="text" class="form-control" />' +
-  //         '</div>',
-  //     showCancelButton: true,
-  //     confirmButtonClass: 'btn btn-success',
-  //     cancelButtonClass: 'btn btn-danger',
-  //     buttonsStyling: false
-  // }).then(function(result) {
-
-  //   this.campaignService.verifyCouponCode(campaignId, $('#input-field').val()).subscribe(
-  //     res => {
-  //       swal(res.message);
-
-  //     }, err => {
-  //       swal(err.message);
-  //     }
-  //   )
-  //     swal({
-  //         type: 'success',
-  //         html: 'You entered: <strong>' +
-  //             $('#input-field').val() +
-  //             '</strong>',
-  //         confirmButtonClass: 'btn btn-success',
-  //         buttonsStyling: false
-
-  //     })
-  // }).catch(swal.noop)
 }

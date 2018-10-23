@@ -11,7 +11,7 @@
                   <!-- row 1 -->
                   <div class=col-12>
                     <mat-form-field>
-                      <input matInput placeholder="Campaign Title" formControlName="title">
+                      <input matInput placeholder="Campaign Title" formControlName="title" maxlength="30">
                     </mat-form-field>
                   </div>
                 </div><!-- end  row 1 -->
@@ -19,14 +19,14 @@
                   <!--Row 2-->
                   <div class="col-6">
                     <mat-form-field>
-                      <textarea matInput placeholder="Terms and Conditions" formControlName="termsAndConditions">
+                      <textarea matInput placeholder="Terms and Conditions" formControlName="termsAndConditions" maxlength="500">
 
                         </textarea>
                     </mat-form-field>
                   </div>
                   <div class="col-6">
                     <mat-form-field>
-                      <textarea matInput placeholder="Description" formControlName="description">
+                      <textarea matInput placeholder="Description" formControlName="description" maxlength="100">
 
                         </textarea>
                     </mat-form-field>
@@ -34,6 +34,21 @@
 
                 </div>
                 <!--End of row 2-->
+
+                <mat-form-field>
+                  <mat-select placeholder="Campaign Category" formControlName="categoryId">
+
+                    <mat-option *ngFor="let row of (categoryObj$ | async)" [value]="row?.id" (onSelectionChange)="categoryCheckedFn()">
+                      {{ row?.name }}
+                    </mat-option>
+                    <!-- <mat-option (click)="openDialog()">Can't find my Category</mat-option> -->
+
+
+                  </mat-select>
+                </mat-form-field>
+                <!-- <mat-form-field *ngIf="newCategoryChecked">
+                  <input matInput placeholder="Enter new Category name" formControlName="newCategoryText" maxlength="30" required>
+                </mat-form-field> -->
 
                 <div class="row">
                   <!--Row 3-->
@@ -71,15 +86,7 @@
                 </div>
                 <!--End of row 3-->
 
-                <mat-form-field>
-                  <mat-select placeholder="Campaign Category" formControlName="categoryId">
-                    <mat-option *ngFor="let row of (categoryObj$ | async)" [value]="row?.id">
-                      {{ row?.name }}
-                    </mat-option>
 
-
-                  </mat-select>
-                </mat-form-field>
 
 
                 <div class=row>
@@ -153,8 +160,9 @@
                       </div>
                     </div> -->
                     <h4>Choose Campaign Image</h4>
-                    <input class="fileinput" type="file" (change)="fileChangeEvent($event)" accept=".jpg, .jpeg, .png">
+                    <input formControlName="imagePicker" class="fileinput" type='file' (change)="fileChangeEvent($event)" accept=".jpg, .jpeg, .png" required />
                     <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="370/270" [resizeToWidth]="370" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+                    <p *ngIf="!imageSize" style="color: red">pleae choose the image of appropriate size from 20kb to 1mb</p>
                     <!-- <img [src]="croppedImage" /> -->
                   </div>
                 </div>
@@ -165,7 +173,8 @@
           </div>
 
           <div>
-            <button class="btn btn-round btn-primary" mat-button matStepperNext>Next</button>
+            <mat-error *ngIf="base64.invalid">Please upload the image.</mat-error>
+            <button [disabled]="base64.invalid || !imageSize" class="btn btn-round btn-success pull-right" mat-button matStepperNext>Next</button>
           </div>
         </mat-step>
         <mat-step [stepControl]="secondFormGroup" [optional]="isOptional">
@@ -178,9 +187,22 @@
               </div>
             </div>
             <div class=row>
+              <!---    ambassadors select-->
+              <div class="col-12" *ngIf="ambChecked">
+                <mat-form-field>
+                  <mat-select placeholder="Select Ambassadors" formControlName="ambassadorIds" multiple>
+                    <mat-option *ngFor="let row of (ambassadorObj$ | async)" [value]="{'id' : row?.id,'referralCode' : row?.referralCode}">
+                      {{row?.firstName}}
+                      {{row?.lastName}}
+                    </mat-option>
+                  </mat-select>
+
+                </mat-form-field>
+              </div>
+              <!---    ambassadors selected-->
               <div class="col-12" *ngIf="ambChecked">
                 <mat-radio-group>
-                  <mat-radio-button (change)="sameAmbPerksClick($event.checked)" value="1">Same perks as normal User
+                  <mat-radio-button (change)="sameAmbPerksClick($event.checked)" value="1">Same perks as normal User&nbsp;&nbsp;
                   </mat-radio-button>
                   <mat-radio-button (change)="sepAmbPerksClick($event.checked)" value="2">define Ambassadors perks
                     separately</mat-radio-button>
@@ -230,30 +252,54 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-12" *ngIf="ambChecked">
-                <mat-form-field>
-                  <mat-select placeholder="Select Ambassadors" formControlName="ambassadorIds" multiple>
-                    <mat-option *ngFor="let row of (ambassadorObj$ | async)" [value]="{'id' : row?.id,'referralCode' : row?.referralCode}">
-                      {{row?.firstName}}
-                      {{row?.lastName}}
-                    </mat-option>
-                  </mat-select>
-
-                </mat-form-field>
+            <!--Referral-->
+            <hr>
+            <div class="container">
+              <div class="row">
+                <mat-checkbox *ngIf="ambChecked" (change)="refCheckBoxClick($event.checked)">Do
+                  you want referrals for your cammpaign?</mat-checkbox>
               </div>
-            </div>
+              <div class="row" *ngIf="refChecked">
+                <mat-radio-group>
+                  <mat-radio-button (change)="sameRefPerksClick($event.checked)" value="1">Same perks as normal User&nbsp;&nbsp;
+                  </mat-radio-button>
+                  <mat-radio-button (change)="sepRefPerksClick($event.checked)" value="2">define Referral perks
+                    separately</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="row" *ngIf="sepRefPerksChecked">
+                <div class="col-6">
+                  <mat-form-field>
+                    <mat-select placeholder="Discount Type" formControlName="referralDiscount" (selectionChange)="refDiscountTypesSelection($event.value)">
+                      <mat-option [value]="row.value" *ngFor="let row of discountTypes">
+                        {{row.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <mat-form-field>
+                    <input min="0" matInput [placeholder]="refDiscountPlaceholder" formControlName="referralDiscountAmount" [type]="discountTxtType">
+                  </mat-form-field>
+                </div>
+              </div>
 
 
 
-            <div>
-              <button class="btn btn-round btn-primary" mat-button matStepperPrevious>Back</button>
-              <button style="float: right" class="btn btn-round btn-primary" mat-button matStepperNext>Next</button>
+
+              <div>
+                <button class="btn btn-round " mat-button matStepperPrevious>Back</button>
+
+
+                <button (click)="SetPayload()" style="float: right;" class="btn btn-round btn-success btn-lg" mat-button>Create
+                  Campaign</button>
+
+              </div>
             </div>
           </form>
 
         </mat-step>
-        <mat-step [stepControl]="thirdFormGroup" [optional]="isOptional">
+        <!-- <mat-step [stepControl]="thirdFormGroup" [optional]="isOptional">
           <div class="container">
             <form [formGroup]="thirdFormGroup">
 
@@ -298,7 +344,7 @@
               </div>
             </form>
           </div>
-        </mat-step>
+        </mat-step> -->
       </mat-horizontal-stepper>
     </div>
   </div>

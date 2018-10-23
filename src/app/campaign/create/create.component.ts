@@ -1,11 +1,20 @@
+import { environment } from './../../../environments/environment';
+import { MatDialog } from '@angular/material';
+import { CreateCategoryComponent } from './../create-category/create-category.component';
 import swal from 'sweetalert2';
 import { CampaignService } from './../../shared/services/campaign.service';
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import {
+  Validators,
+  FormGroup,
+  FormBuilder,
+  FormControl
+} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ImageCroppedEvent } from 'ngx-image-cropper/src/image-cropper.component';
 
 declare const $: any;
+
 interface FileReaderEventTarget extends EventTarget {
   result: string;
 }
@@ -21,11 +30,13 @@ interface FileReaderEvent extends Event {
   styleUrls: ['./create.component.scss']
 })
 export class CreateComponent implements OnInit {
+  temp: any;
+  imagePicked = false;
   imageChangedEvent: any = '';
   croppedImage: any = '';
   isOptional = false;
   fileName: any;
-  base64: string;
+  base64 = new FormControl('', Validators.required);
   file: any;
   categoryObj$: Observable<object>;
   ambassadorObj$: Observable<object>;
@@ -41,10 +52,12 @@ export class CreateComponent implements OnInit {
   sameAmbPerksChecked = false;
   sameRefPerksChecked = false;
   minDate = new Date();
+  newCategoryChecked = false;
+  imageSize = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   imageFormGroup: FormGroup;
-  thirdFormGroup: FormGroup;
+  // thirdFormGroup: FormGroup;
 
   payloadObj = {
     ambassadorIds: [],
@@ -55,6 +68,7 @@ export class CreateComponent implements OnInit {
     discountType: {},
     discountUtilization: { ambassador: {}, user: {} },
     isApproved: false,
+    isRejected: false,
     merchantId: '',
     noOfWeeks: 0,
     startDate: '',
@@ -104,7 +118,8 @@ export class CreateComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private campaignService: CampaignService
+    private campaignService: CampaignService,
+    public dialog: MatDialog
   ) {
     this.firstFormGroup = formBuilder.group({
       title: ['', Validators.required],
@@ -119,6 +134,7 @@ export class CreateComponent implements OnInit {
       categoryId: ['', Validators.required],
       number: ['', Validators.required],
       baseDiscountAmount: ['', Validators.required]
+      // newCategoryText: ['']
     });
     this.secondFormGroup = formBuilder.group({
       secondCtrl: [],
@@ -126,19 +142,69 @@ export class CreateComponent implements OnInit {
       ambDiscountUtilization: [''],
       ambassadorDiscount: [''],
       ambassadorDiscountAmount: [''],
-      ambassadorIds: []
-    });
-    this.imageFormGroup = formBuilder.group({});
-    this.thirdFormGroup = formBuilder.group({
-      thirdFormGroup: [''],
+      ambassadorIds: [],
       referralDiscountAmount: [''],
       referralDiscount: ['']
+    });
+    this.imageFormGroup = formBuilder.group({
+      imagePicker: ['', Validators.required]
     });
   }
 
   ngOnInit() {
     this.categoryObj$ = this.campaignService.getCategories(); // get Categories call
     this.ambassadorObj$ = this.campaignService.getAmbassadors(); // get all ambassadorss
+
+    if (
+      environment.navigatedFromArchived === true &&
+      environment.campaignIdToReActivate !== ''
+    ) {
+      this.campaginById();
+    }
+  }
+  campaginById() {
+    this.campaignService
+      .getCampaignById(environment.campaignIdToReActivate)
+      .subscribe(
+        res => {
+          environment.navigatedFromArchived = false;
+          environment.campaignIdToReActivate = '';
+          console.log(res);
+          // console.log('nwe new new', res['discountType'].baseDiscount);
+          console.log('this is start date', res['startDate']);
+          this.campaignService.getCategoryById(res['categoryId']).subscribe(
+            response => {
+              this.temp = response['name'];
+              console.log('category name', this.temp);
+            },
+            error => {
+              console.log('there is an error', error);
+            }
+          );
+
+          this.firstFormGroup.setValue({
+            title: res['title'],
+            description: res['description'],
+            termsAndConditions: res['termsAndConditions'],
+            // categoryId: this.temp,
+            categoryId: res['categoryId'],
+            campaignType: res['campaignType'],
+            startDate: res['startDate'],
+            noOfWeeks: res['noOfWeeks'],
+            discountType: res['discountType'].baseDiscount,
+            discountUtilization: res['discountUtilization'].user['type'],
+            number: res['discountUtilization'].user['number'],
+            baseDiscountAmount: res['discountAmount'].baseDiscountAmount
+          });
+          console.log(
+            ' this is number of weeks',
+            this.firstFormGroup.get('noOfWeeks').value
+          );
+        },
+        err => {
+          console.log(err);
+        }
+      );
   }
   selectedNoOfWeeks(val) {
     console.log(val);
@@ -151,19 +217,8 @@ export class CreateComponent implements OnInit {
       this.refChecked = false;
       this.sepRefPerksChecked = false;
       this.secondFormGroup.reset();
-      this.thirdFormGroup.reset();
+      // this.thirdFormGroup.reset();
     }
-    //    if (!event) {
-    //       this.secondFormGroup.get('ambDiscountUtilization').value.clear();
-    // //       this.secondFormGroup.get('ambNumber').reset();
-    // //       this.secondFormGroup.get('ambassadorDiscount').reset();
-
-    // // // //             ambDiscountUtilization: [''],
-    // // // // ambassadorDiscount: [''],
-    // // // // ambassadorDiscountAmount: [''],
-    // // // // ambassadorIds: [ ]
-
-    //   }
 
     console.log(event);
   }
@@ -180,9 +235,10 @@ export class CreateComponent implements OnInit {
     this.refChecked = event;
     if (!event) {
       this.sepRefPerksChecked = false;
-      this.thirdFormGroup.reset();
+      // this.thirdFormGroup.reset();
     }
   }
+
   sepRefPerksClick(event) {
     this.sepRefPerksChecked = true;
     this.sameRefPerksChecked = false;
@@ -190,6 +246,12 @@ export class CreateComponent implements OnInit {
   sameRefPerksClick(event) {
     this.sepRefPerksChecked = false;
     this.sameRefPerksChecked = true;
+  }
+  newCategoryFn() {
+    this.newCategoryChecked = true;
+  }
+  categoryCheckedFn() {
+    this.newCategoryChecked = false;
   }
 
   discountTypesSelection(value) {
@@ -228,11 +290,27 @@ export class CreateComponent implements OnInit {
     }
   }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(CreateCategoryComponent, {
+      width: '250px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
   handleFileSelect($event) {
     console.log($event);
     console.log($event.target.files);
     this.fileName = $event.target.files[0].name;
     this.getBase64($event.target.files[0], result => {
+      if ($event.target.files[0].size / 1024 > 100) {
+        this.imageSize = true;
+      } else {
+        this.imageSize = false;
+      }
       this.base64 = result;
       // this.file.emit(this.base64);
     });
@@ -249,10 +327,10 @@ export class CreateComponent implements OnInit {
     };
   }
 
-  clear() {
-    this.base64 = '';
-    this.fileName = '';
-  }
+  // clear() {
+  //   this.base64.setValue = '';
+  //   this.fileName = '';
+  // }
 
   // Setting values to payload
   SetPayload() {
@@ -302,14 +380,14 @@ export class CreateComponent implements OnInit {
       this.discountType = {
         baseDiscount: this.firstFormGroup.get('discountType').value,
         ambassadorDiscount: this.firstFormGroup.get('discountType').value,
-        referralDiscount: this.thirdFormGroup.get('referralDiscount').value
+        referralDiscount: this.secondFormGroup.get('referralDiscount').value
       };
       this.discountAmount = {
         baseDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value,
 
         ambassadorDiscountAmount: this.firstFormGroup.get('baseDiscountAmount')
           .value,
-        referralDiscountAmount: this.thirdFormGroup.get(
+        referralDiscountAmount: this.secondFormGroup.get(
           'referralDiscountAmount'
         ).value
       };
@@ -354,7 +432,7 @@ export class CreateComponent implements OnInit {
         baseDiscount: this.firstFormGroup.get('discountType').value,
         ambassadorDiscount: this.secondFormGroup.get('ambassadorDiscount')
           .value,
-        referralDiscount: this.thirdFormGroup.get('referralDiscount').value
+        referralDiscount: this.secondFormGroup.get('referralDiscount').value
       };
       this.discountAmount = {
         baseDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value,
@@ -362,49 +440,21 @@ export class CreateComponent implements OnInit {
         ambassadorDiscountAmount: this.secondFormGroup.get(
           'ambassadorDiscountAmount'
         ).value,
-        referralDiscountAmount: this.thirdFormGroup.get(
+        referralDiscountAmount: this.secondFormGroup.get(
           'referralDiscountAmount'
         ).value
       };
     }
-    // const discountAmount = {
-    //   baseDiscountAmount: this.firstFormGroup.get('baseDiscountAmount').value,
 
-    //   ambassadorDiscountAmount:  this.secondFormGroup.get('ambassadorDiscountAmount').value,
-    //   referralDiscountAmount: this.thirdFormGroup.get('referralDiscountAmount').value
-    // }
-    // const discountType = {
-    //   baseDiscount: this.firstFormGroup.get('discountType').value,
-    //   ambassadorDiscount: this.secondFormGroup.get('ambassadorDiscount').value,
-    //   referralDiscount: this.thirdFormGroup.get('referralDiscount').value
-    // }
-
-    // const discountUtilization = {
-    //   ambassador :  {
-    //     type: this.secondFormGroup.get('ambDiscountUtilization').value,
-    //     number: this.secondFormGroup.get('ambNumber').value
-    //   },
-    //   user : {
-    //     type: this.firstFormGroup.get('discountUtilization').value,
-    //     number: this.firstFormGroup.get('number').value
-    //   }
-
-    // }
-    // this.discountAmount['baseDiscountAmount'] = this.firstFormGroup.get('baseDiscountAmount').value;
-    // this.discountAmount.ambassadorDiscountAmount = this.secondFormGroup.get('ambassadorDiscountAmount').value;
-    // this.discountAmount.referralDiscountAmount  = this.thirdFormGroup.get('referralDiscountAmount').value;
     this.payloadObj.discountAmount = this.discountAmount;
-    // this.discountType.baseDiscount = this.firstFormGroup.get('discountType').value;
-    // this.discountType.ambassadorDiscount = this.secondFormGroup.get('ambassadorDiscount').value;
-    // this.discountType.referralDiscount = this.thirdFormGroup.get('referralDiscount').value;
+
     this.payloadObj.discountType = this.discountType;
-    // this.ambassador.type = this.secondFormGroup.get('ambDiscountUtilization').value;
-    // this.ambassador.number = this.secondFormGroup.get('abNumber').value;
+
     this.payloadObj.discountUtilization.ambassador = this.discountUtilization.ambassador;
-    // this.user.type = this.firstFormGroup.get('discountUtilization').value;
-    // this.user.number = this.firstFormGroup.get('number').value;
+
     this.payloadObj.discountUtilization.user = this.discountUtilization.user;
     this.payloadObj.isApproved = false;
+    this.payloadObj.isRejected = false;
     const temp = JSON.parse(localStorage.getItem('user'));
     this.payloadObj.merchantId = temp['userId'];
     this.payloadObj.noOfWeeks = this.firstFormGroup.get('noOfWeeks').value;
@@ -448,9 +498,19 @@ export class CreateComponent implements OnInit {
   // done
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
+    this.imagePicked = true;
   }
   imageCropped(event: ImageCroppedEvent) {
+    console.log(event);
     this.croppedImage = event.base64;
+    if (event.file.size / 1024 > 100 && event.file.size / 1024 < 1000) {
+      this.imageSize = true;
+    } else {
+      this.imageSize = false;
+    }
+    console.log(event.file.size);
+    console.log('nsdvliunekjvnwi');
+    this.base64.setValue(this.croppedImage);
   }
   imageLoaded() {
     // alert('image loaded');

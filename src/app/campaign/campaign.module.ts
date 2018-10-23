@@ -8,12 +8,24 @@ import { CampaignRoutingModule } from './campaign-routing.module';
 import { CreateComponent } from './create/create.component';
 import { ViewComponent } from './view/view.component';
 // tslint:disable-next-line:max-line-length
-import { MatInputModule, MatFormFieldModule, MatStepperModule, MatOptionModule, MatSelectModule, MatDatepickerModule, MatCheckbox, MatCheckboxModule, MatRadioModule } from '@angular/material';
+import {
+  MatInputModule,
+  MatFormFieldModule,
+  MatStepperModule,
+  MatOptionModule,
+  MatSelectModule,
+  MatDatepickerModule,
+  MatCheckbox,
+  MatCheckboxModule,
+  MatRadioModule
+} from '@angular/material';
 import { MdModule } from 'app/md/md.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ArchiveComponent } from './archive/archive.component';
 import { CurrentComponent } from './current/current.component';
+import { PendingComponent } from './pending/pending.component';
+import { CreateCategoryComponent } from './create-category/create-category.component';
 // import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
@@ -33,8 +45,15 @@ import { CurrentComponent } from './current/current.component';
     MaterialModule,
     SharedModule,
     ImageCropperModule
-
   ],
-  declarations: [CreateComponent, ViewComponent, ArchiveComponent, CurrentComponent]
+  declarations: [
+    CreateComponent,
+    ViewComponent,
+    ArchiveComponent,
+    CurrentComponent,
+    PendingComponent,
+    CreateCategoryComponent
+  ],
+  entryComponents: [CreateCategoryComponent]
 })
-export class CampaignModule { }
+export class CampaignModule {}

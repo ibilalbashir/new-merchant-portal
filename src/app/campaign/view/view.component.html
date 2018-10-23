@@ -3,10 +3,14 @@
     <mat-tab label="Active Campaigns">
       <app-current></app-current>
     </mat-tab>
-    <mat-tab label="Pending Approval"></mat-tab>
-    <mat-tab label="Archived">
-      <app-archive></app-archive>
+    <mat-tab label="Pending Approval">
+      <app-pending></app-pending>
     </mat-tab>
+    <div id="Archived">
+      <mat-tab label="Archived">
+        <app-archive></app-archive>
+      </mat-tab>
+    </div>
 
   </mat-tab-group>
 </div>

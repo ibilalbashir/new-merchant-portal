@@ -5,5 +5,7 @@
 
 export const environment = {
   production: false,
-  url: 'http://13.126.228.192:3000/api'
+  url: 'http://13.126.228.192:3000/api',
+  navigatedFromArchived: false, // this variable becomes true if user clickes on activate again
+  campaignIdToReActivate: ''
 };

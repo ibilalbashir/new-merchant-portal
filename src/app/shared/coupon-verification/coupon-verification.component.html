@@ -1,0 +1,13 @@
+<div class="md-dialog-container">
+  <form class="text-center" [formGroup]="verifyForm">
+    <h2>Coupon code Verification</h2>
+    <mat-dialog-content>
+      <input type="text" placeholder="Enter Coupon Code" formControlName="couponCode">
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button (click)="verifyCouponCode()">Verify
+      </button>
+      <button mat-button mat-dialog-close>cancle</button>
+    </mat-dialog-actions>
+  </form>
+</div>
