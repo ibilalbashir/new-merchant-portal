@@ -11,7 +11,7 @@
                   <!-- row 1 -->
                   <div class=col-12>
                     <mat-form-field>
-                      <input matInput placeholder="Campaign Title" formControlName="title" maxlength="30">
+                      <input matInput placeholder="Campaign Title (maximum 30 characters)" formControlName="title" maxlength="30">
                     </mat-form-field>
                   </div>
                 </div><!-- end  row 1 -->
@@ -19,14 +19,14 @@
                   <!--Row 2-->
                   <div class="col-6">
                     <mat-form-field>
-                      <textarea matInput placeholder="Terms and Conditions" formControlName="termsAndConditions" maxlength="500">
+                      <textarea matInput placeholder="Terms and Conditions (Maximum 500 characters)" formControlName="termsAndConditions" maxlength="500">
 
                         </textarea>
                     </mat-form-field>
                   </div>
                   <div class="col-6">
                     <mat-form-field>
-                      <textarea matInput placeholder="Description" formControlName="description" maxlength="100">
+                      <textarea matInput placeholder="Description ( Maximum 100 characters)" formControlName="description" maxlength="100">
 
                         </textarea>
                     </mat-form-field>
@@ -54,7 +54,7 @@
                   <!--Row 3-->
                   <div class="col-4">
                     <mat-form-field>
-                      <mat-select placeholder="campaginType" formControlName="campaignType">
+                      <mat-select placeholder="Campagin Type" formControlName="campaignType">
                         <mat-option *ngFor="let row of campaignTypes" [value]="row.value">
                           {{row.viewValue}}
 
@@ -88,46 +88,50 @@
 
 
 
+                <div class=" border mat-elevation-z1 for-admin">
+                  <p class="for-admin-p"><u matTooltip="This information won't be displayed on website">This informtion won't be dislayed</u></p>
 
-                <div class=row>
-                  <!--row 4-->
-                  <div class="col-6">
-                    <mat-form-field>
-                      <mat-select placeholder="Discount Type" formControlName="discountType" (selectionChange)="discountTypesSelection($event.value)">
-                        <mat-option [value]="row.value" *ngFor="let row of discountTypes">
-                          {{row.viewValue}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <div class=col-6>
-                    <mat-form-field>
-                      <input matInput placeholder="Input value" formControlName="baseDiscountAmount" [type]="discountTxtType">
-                    </mat-form-field>
-                  </div>
-                </div><!-- end of row 4-->
-                <div class=row>
-                  <!--row 5-->
-                  <div class="col-6">
-                    <mat-form-field>
-                      <mat-select placeholder="Discount Utilization" formControlName="discountUtilization">
-                        <mat-option *ngFor="let row of utilizations" [value]="row.value">
-                          {{row.viewValue}}
-                        </mat-option>
+                  <div class=row>
+
+                    <!--row 4-->
+                    <div class=" col-6">
+                      <mat-form-field>
+                        <mat-select placeholder="Discount Type" formControlName="discountType" (selectionChange)="discountTypesSelection($event.value)">
+                          <mat-option [value]="row.value" *ngFor="let row of discountTypes">
+                            {{row.viewValue}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class=col-6>
+                      <mat-form-field>
+                        <input matInput [placeholder]="discountPlaceholder" formControlName="baseDiscountAmount" [type]="discountTxtType">
+                      </mat-form-field>
+                    </div>
+                  </div><!-- end of row 4-->
+                  <div class=row>
+                    <!--row 5-->
+                    <div class="col-6">
+                      <mat-form-field>
+                        <mat-select placeholder="Discount Utilization" formControlName="discountUtilization">
+                          <mat-option *ngFor="let row of utilizations" [value]="row.value">
+                            {{row.viewValue}}
+                          </mat-option>
 
 
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-6">
-                    <mat-form-field>
-                      <mat-select placeholder="pick a number" formControlName="number">
-                        <mat-option *ngFor="let row of utilizationNumber" [value]="row.value">
-                          {{row.viewValue}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field>
+                        <mat-select placeholder="pick a number" formControlName="number">
+                          <mat-option *ngFor="let row of utilizationNumber" [value]="row.value">
+                            {{row.viewValue}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
 
+                    </div>
                   </div>
                 </div>
                 <!--end of Row 5-->
@@ -162,7 +166,7 @@
                     <h4>Choose Campaign Image</h4>
                     <input formControlName="imagePicker" class="fileinput" type='file' (change)="fileChangeEvent($event)" accept=".jpg, .jpeg, .png" required />
                     <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="370/270" [resizeToWidth]="370" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (loadImageFailed)="loadImageFailed()"></image-cropper>
-                    <p *ngIf="!imageSize" style="color: red">pleae choose the image of appropriate size from 20kb to 1mb</p>
+                    <p *ngIf="!imageSize" style="color: red">please choose the image of appropriate size from 200KB to 5MB</p>
                     <!-- <img [src]="croppedImage" /> -->
                   </div>
                 </div>
@@ -194,6 +198,7 @@
                     <mat-option *ngFor="let row of (ambassadorObj$ | async)" [value]="{'id' : row?.id,'referralCode' : row?.referralCode}">
                       {{row?.firstName}}
                       {{row?.lastName}}
+                      <img style="height: 50px" src="{{row?.idCard}}">
                     </mat-option>
                   </mat-select>
 

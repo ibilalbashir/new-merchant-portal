@@ -9,6 +9,7 @@ import {
   MatInputModule
 } from '@angular/material';
 import { CouponVerificationComponent } from '../shared/coupon-verification/coupon-verification.component';
+import { CampaignDetailComponent } from './campaign-detail/campaign-detail.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,8 +20,12 @@ import { CouponVerificationComponent } from '../shared/coupon-verification/coupo
     ReactiveFormsModule,
     MaterialModule
   ],
-  declarations: [CampaignCardComponent, CouponVerificationComponent],
+  declarations: [
+    CampaignCardComponent,
+    CouponVerificationComponent,
+    CampaignDetailComponent
+  ],
   exports: [CampaignCardComponent],
-  entryComponents: [CouponVerificationComponent]
+  entryComponents: [CouponVerificationComponent, CampaignDetailComponent]
 })
 export class SharedModule {}

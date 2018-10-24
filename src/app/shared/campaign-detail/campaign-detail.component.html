@@ -1,0 +1,17 @@
+<div class="md-dialog-container">
+  <form class="text-center">
+
+    <mat-dialog-content>
+      <img src="{{data.displayImage}}">
+      <h3>{{data.title}}</h3>
+      <p>Start Date: {{data.startDate| date: 'dd/MM/yyyy'}}</p><br>
+      <p>End Date: {{data.endDate | date: 'dd/MM/yyyy'}}</p>
+      <hr>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+
+      <button mat-button mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+  </form>
+</div>

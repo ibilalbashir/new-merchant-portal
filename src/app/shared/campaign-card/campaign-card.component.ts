@@ -1,3 +1,4 @@
+import { CampaignDetailComponent } from './../campaign-detail/campaign-detail.component';
 import { CouponVerificationComponent } from '../coupon-verification/coupon-verification.component';
 
 import { MatDialog } from '@angular/material';
@@ -7,7 +8,6 @@ import { Router } from '@angular/router';
 import { CampaignService } from './../services/campaign.service';
 import { Component, OnInit, Input } from '@angular/core';
 import swal from 'sweetalert2';
-import { calcBindingFlags } from '@angular/core/src/view/util';
 
 declare const $: any;
 
@@ -23,13 +23,15 @@ export class CampaignCardComponent implements OnInit {
   btnArchived = false;
   date = new Date();
   currentDate = this.date.toISOString();
+  campaignId: String;
   @Input()
   data;
 
   constructor(
     private campaignService: CampaignService,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public detailsDialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -39,6 +41,8 @@ export class CampaignCardComponent implements OnInit {
     // if (this.data['isRejected']) {
     //   this.rejectedBtn = true;
     // }
+    this.campaignId = this.data['id'];
+    // console.log('idddd', this.camapignId);
     if (this.data['endDate'] < this.currentDate || this.data['isRejected']) {
       this.rejectedBtn = true;
       if (this.data['isRejected']) {
@@ -60,7 +64,8 @@ export class CampaignCardComponent implements OnInit {
   //   console.log(campaignId);
   verifyCoupnCodeFn(): void {
     const dialogRef = this.dialog.open(CouponVerificationComponent, {
-      width: '500px'
+      width: '500px',
+      data: { id: this.campaignId }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -68,53 +73,16 @@ export class CampaignCardComponent implements OnInit {
     });
   }
 
-  // swal({
-  //   title: 'Enter Coupon Code',
-  //   html:
-  //     '<div class="form-group">' +
-  //     '<input id="input-field" type="text" class="form-control" />' +
-  //     '</div>',
-  //   type: 'warning',
-  //   showCancelButton: true,
-  //   confirmButtonText: 'Validate',
-  //   cancelButtonText: 'Cancel',
-  //   confirmButtonClass: 'btn btn-success',
-  //   cancelButtonClass: 'btn btn-danger',
-  //   buttonsStyling: false
-  // }).then(result => {
-  //   if (result.value) {
-  //     this.campaignService
-  //       .verifyCouponCode(campaignId, $('#input-field').val())
-  //       .subscribe(
-  //         res => {
-  //           swal({
-  //             title: 'coupon code verified',
-  //             type: 'success',
-  //             confirmButtonClass: 'btn btn-success',
-  //             buttonsStyling: false
-  //           }).catch(swal.noop);
-  //         },
-  //         err => {
-  //           swal({
-  //             title: 'NOT verified',
-  //             text: err['message'],
-  //             type: 'error',
-  //             confirmButtonClass: 'btn btn-info',
-  //             buttonsStyling: false
-  //           }).catch(swal.noop);
-  //         }
-  //       );
-  //   } else {
-  //     swal({
-  //       title: 'Cancelled',
-  //       text: 'you did not run validation',
-  //       type: 'error',
-  //       confirmButtonClass: 'btn btn-info',
-  //       buttonsStyling: false
-  //     }).catch(swal.noop);
-  //   }
-  // });
-  // }
+  showDetailsFn(): void {
+    const dialogRef = this.dialog.open(CampaignDetailComponent, {
+      width: '500px',
+      data: this.data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 
   activateAgainFn(campaignId) {
     this.router.navigate(['/main/campaign/create']);

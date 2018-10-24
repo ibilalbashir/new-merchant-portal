@@ -45,6 +45,7 @@ export class CreateComponent implements OnInit {
   discountTxtType = 'number';
   ambDiscountPlaceholder = 'input Vlaue';
   refDiscountPlaceholder = 'input Vlaue';
+  discountPlaceholder = 'input Value';
   ambChecked = false;
   sepAmbPerksChecked = false;
   refChecked = false;
@@ -258,9 +259,12 @@ export class CreateComponent implements OnInit {
     console.log(value);
     if (value === 'fixed') {
       this.discountTxtType = 'number';
+      this.discountPlaceholder = 'Enter Fixed Discount Amount';
     } else if (value === 'percentage') {
+      this.discountPlaceholder = 'Enter discount in percentage';
       this.discountTxtType = 'number';
     } else if (value === 'other') {
+      this.discountPlaceholder = 'Enter Details';
       this.discountTxtType = 'text';
     }
   }
@@ -306,11 +310,11 @@ export class CreateComponent implements OnInit {
     console.log($event.target.files);
     this.fileName = $event.target.files[0].name;
     this.getBase64($event.target.files[0], result => {
-      if ($event.target.files[0].size / 1024 > 100) {
-        this.imageSize = true;
-      } else {
-        this.imageSize = false;
-      }
+      // if ($event.target.files[0].size / 1024 > 100) {
+      //   this.imageSize = true;
+      // } else {
+      //   this.imageSize = false;
+      // }
       this.base64 = result;
       // this.file.emit(this.base64);
     });
@@ -503,7 +507,8 @@ export class CreateComponent implements OnInit {
   imageCropped(event: ImageCroppedEvent) {
     console.log(event);
     this.croppedImage = event.base64;
-    if (event.file.size / 1024 > 100 && event.file.size / 1024 < 1000) {
+    console.log('image size', event.file.size / 1024);
+    if (event.file.size / 1024 > 100 && event.file.size / 1024 < 5000) {
       this.imageSize = true;
     } else {
       this.imageSize = false;

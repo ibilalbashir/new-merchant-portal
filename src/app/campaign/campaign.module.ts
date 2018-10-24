@@ -17,7 +17,8 @@ import {
   MatDatepickerModule,
   MatCheckbox,
   MatCheckboxModule,
-  MatRadioModule
+  MatRadioModule,
+  TooltipComponent
 } from '@angular/material';
 import { MdModule } from 'app/md/md.module';
 import { SharedModule } from 'app/shared/shared.module';

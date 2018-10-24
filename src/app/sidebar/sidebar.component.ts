@@ -7,33 +7,34 @@ declare const $: any;
 
 // Metadata
 export interface RouteInfo {
-    path: string;
-    title: string;
-    type: string;
-    icontype: string;
-    collapse?: string;
-    children?: ChildrenItems[];
+  path: string;
+  title: string;
+  type: string;
+  icontype: string;
+  collapse?: string;
+  children?: ChildrenItems[];
 }
 
 export interface ChildrenItems {
-    path: string;
-    title: string;
-    ab: string;
-    type?: string;
+  path: string;
+  title: string;
+  ab: string;
+  type?: string;
 }
 
 // Menu Items
-export const ROUTES: RouteInfo[] = [{
-        path: '/dashboard',
-        title: 'Dashboard',
-        type: 'link',
-        icontype: 'dashboard'
-    },
-    {
-        path: 'campaign',
-        title: 'Campaign',
-        type: 'link',
-        icontype: 'dashboard'
+export const ROUTES: RouteInfo[] = [
+  {
+    path: '/main',
+    title: 'Dashboard',
+    type: 'link',
+    icontype: 'dashboard'
+  },
+  {
+    path: 'campaign',
+    title: 'Campaign',
+    type: 'link',
+    icontype: 'dashboard'
     // }, {
     //     path: '/components',
     //     title: 'Components',
@@ -114,48 +115,51 @@ export const ROUTES: RouteInfo[] = [{
     //         {path: 'lock', title: 'Lock Screen Page', ab: 'LSP'},
     //         {path: 'user', title: 'User Page', ab: 'UP'}
     //     ]
-    }
+  }
 ];
 @Component({
-    selector: 'app-sidebar-cmp',
-    templateUrl: 'sidebar.component.html',
+  selector: 'app-sidebar-cmp',
+  templateUrl: 'sidebar.component.html'
 })
-
-
-
 export class SidebarComponent implements OnInit {
-    public menuItems: any[];
-    merchant_name = localStorage.getItem('merchant_name')
+  public menuItems: any[];
+  merchant_name = localStorage.getItem('merchant_name');
 
-    constructor(private router: Router) {
+  constructor(private router: Router) {}
 
+  isMobileMenu() {
+    if ($(window).width() > 991) {
+      return false;
     }
+    return true;
+  }
 
-    isMobileMenu() {
-        if ($(window).width() > 991) {
-            return false;
-        }
-        return true;
-    };
-
-    ngOnInit() {
-        this.menuItems = ROUTES.filter(menuItem => menuItem);
+  ngOnInit() {
+    this.menuItems = ROUTES.filter(menuItem => menuItem);
+  }
+  updatePS(): void {
+    if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
+      const elemSidebar = <HTMLElement>(
+        document.querySelector('.sidebar .sidebar-wrapper')
+      );
+      const ps = new PerfectScrollbar(elemSidebar, {
+        wheelSpeed: 2,
+        suppressScrollX: true
+      });
     }
-    updatePS(): void  {
-        if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
-            const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
-            const ps = new PerfectScrollbar(elemSidebar, { wheelSpeed: 2, suppressScrollX: true });
-        }
+  }
+  isMac(): boolean {
+    let bool = false;
+    if (
+      navigator.platform.toUpperCase().indexOf('MAC') >= 0 ||
+      navigator.platform.toUpperCase().indexOf('IPAD') >= 0
+    ) {
+      bool = true;
     }
-    isMac(): boolean {
-        let bool = false;
-        if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
-            bool = true;
-        }
-        return bool;
-    }
-    onLogOut() {
-        localStorage.removeItem('user');
-        this.router.navigateByUrl('/main');
-    }
+    return bool;
+  }
+  onLogOut() {
+    localStorage.removeItem('user');
+    this.router.navigateByUrl('/main');
+  }
 }
