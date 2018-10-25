@@ -195,10 +195,11 @@
               <div class="col-12" *ngIf="ambChecked">
                 <mat-form-field>
                   <mat-select placeholder="Select Ambassadors" formControlName="ambassadorIds" multiple>
-                    <mat-option *ngFor="let row of (ambassadorObj$ | async)" [value]="{'id' : row?.id,'referralCode' : row?.referralCode}">
+                    <mat-option style="height:6rem" *ngFor="let row of (ambassadorObj$ | async)" [value]="{'id' : row?.id,'referralCode' : row?.referralCode}">
                       {{row?.firstName}}
                       {{row?.lastName}}
-                      <img style="height: 50px" src="{{row?.idCard}}">
+                      <img style="height: 80px; padding-left: 30px;" src="{{row?.idCard}}">
+                      {{row?.instituteName}}
                     </mat-option>
                   </mat-select>
 
