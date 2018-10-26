@@ -4,7 +4,7 @@
       <mat-horizontal-stepper linear #stepper>
         <mat-step [stepControl]="firstFormGroup" [optional]="isOptional">
           <div class="row">
-            <div class=col-8>
+            <div class="col-md-8 col-sm-12 col-xs-12">
               <form [formGroup]="firstFormGroup">
                 <ng-template matStepLabel>Campagin Details</ng-template>
                 <div class=row>
@@ -138,7 +138,7 @@
 
               </form>
             </div>
-            <div class="col-4">
+            <div class="col-md-4 col-sm-12 col-xs-12">
               <form [formGroup]="imageFormGroup">
                 <!-- image form-->
                 <ng-template matStepLabel>Campaign Creation</ng-template>
@@ -165,7 +165,7 @@
                     </div> -->
                     <h4>Choose Campaign Image</h4>
                     <input formControlName="imagePicker" class="fileinput" type='file' (change)="fileChangeEvent($event)" accept=".jpg, .jpeg, .png" required />
-                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="370/270" [resizeToWidth]="370" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+                    <image-cropper *ngIf="imageCropperStatus" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="370/270" [resizeToWidth]="370" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (loadImageFailed)="loadImageFailed()"></image-cropper>
                     <p *ngIf="!imageSize" style="color: red">please choose the image of appropriate size from 200KB to 5MB</p>
                     <!-- <img [src]="croppedImage" /> -->
                   </div>

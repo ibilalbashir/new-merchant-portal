@@ -55,6 +55,7 @@ export class CreateComponent implements OnInit {
   minDate = new Date();
   newCategoryChecked = false;
   imageSize = false;
+  imageCropperStatus = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   imageFormGroup: FormGroup;
@@ -503,6 +504,7 @@ export class CreateComponent implements OnInit {
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
     this.imagePicked = true;
+    this.imageCropperStatus = true;
   }
   imageCropped(event: ImageCroppedEvent) {
     console.log(event);
