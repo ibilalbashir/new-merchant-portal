@@ -3,7 +3,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
 import { FormsModule, FormGroup } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import {
+  CommonModule,
+  LocationStrategy,
+  HashLocationStrategy
+} from '@angular/common';
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -97,7 +101,7 @@ export class MaterialModule {}
     CommonModule,
     BrowserAnimationsModule,
     FormsModule,
-    RouterModule.forRoot(AppRoutes),
+    RouterModule.forRoot(AppRoutes, { useHash: true }),
     HttpClientModule,
     MaterialModule,
     MatNativeDateModule,
@@ -114,6 +118,10 @@ export class MaterialModule {}
       useValue: {
         separatorKeyCodes: [ENTER, COMMA]
       }
+    },
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
     },
     AuthGuard
   ]

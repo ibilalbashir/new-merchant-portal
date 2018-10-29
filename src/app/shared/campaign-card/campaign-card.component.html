@@ -37,13 +37,13 @@
         <div class="card-footer ">
           <ng-container *ngIf="rejectedBtn; else elseTemplate">
 
-            <button style="margin: auto" class="btn  btn-sm" *ngIf="rejectedBtn" (click)="activateAgainFn(data?.id)">Activate Again</button>
+            <button style="margin: auto" class="btn  " *ngIf="rejectedBtn" (click)="activateAgainFn(data?.id)">Activate Again</button>
             <i matTooltip="This Campaign is Rejected" *ngIf="rejectedSign" class="fa fa-close" style="font-size:48px;color:red"></i>
           </ng-container>
           <ng-template #elseTemplate>
-            <button (click)="verifyCoupnCodeFn()" style="margin: auto" class="btn btn-success btn-sm" *ngIf="data?.isApproved">Verify Coupon Code</button>
+            <button (click)="verifyCoupnCodeFn()" style="margin: auto" class="btn btn-success verifyBtn" *ngIf="data?.isApproved">Verify Coupon</button>
 
-            <button (click)="notApprovedMessage()" style="margin: auto" class="btn btn-danger btn-sm" *ngIf="!data?.isApproved">Not Verified Yet</button>
+            <button (click)="notApprovedMessage()" style="margin: auto" class="btn btn-danger " *ngIf="!data?.isApproved">Not Approved Yet</button>
 
           </ng-template>
 

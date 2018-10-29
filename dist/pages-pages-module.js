@@ -68,7 +68,7 @@ var LockComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"wrapper wrapper-full-page\">\n  <div class=\"page-header login-page header-filter\" filter-color=\"black\" style=\"background-image: url('./assets/img/login.jpg'); background-size: cover; background-position: top center;\">\n    <!--   you can change the color of the filter page using: data-color=\"blue | purple | green | orange | red | rose \" -->\n    <div class=\"container\">\n      <div class=\"col-lg-4 col-md-6 col-sm-6 ml-auto mr-auto\">\n        <form [formGroup]=\"loginForm\" class=\"form\" >\n          <div class=\"card card-login card-hidden\">\n            <div class=\"card-header card-header-rose text-center\">\n              <h4 class=\"card-title\">Log in</h4>\n              <!-- <div class=\"social-line\">\n                <a href=\"#pablo\" class=\"btn btn-just-icon btn-link btn-white\">\n                  <i class=\"fa fa-facebook-square\"></i>\n                </a>\n                <a href=\"#pablo\" class=\"btn btn-just-icon btn-link btn-white\">\n                  <i class=\"fa fa-twitter\"></i>\n                </a>\n                <a href=\"#pablo\" class=\"btn btn-just-icon btn-link btn-white\">\n                  <i class=\"fa fa-google-plus\"></i>\n                </a>\n              </div> -->\n            </div>\n            <div class=\"card-body \">\n             <!-- <p class=\"card-description text-center\">Or Be Classical</p>\n               <span class=\"bmd-form-group\">\n                <div class=\"input-group\">\n                  <div class=\"input-group-prepend\">\n                    <span class=\"input-group-text\">\n                      <i class=\"material-icons\">face</i>\n                    </span>\n                  </div>\n                  <input type=\"text\" class=\"form-control\" placeholder=\"First Name...\">\n                </div>\n              </span> -->\n              <span class=\"bmd-form-group\">\n                <div class=\"input-group\">\n                  <div class=\"input-group-prepend\">\n                    <span class=\"input-group-text\">\n                      <i class=\"material-icons\">email</i>\n                    </span>\n                  </div>\n                  <input formControlName=\"email\" type=\"email\" class=\"form-control\" placeholder=\"Email...\">\n                </div>\n              </span>\n              <span class=\"bmd-form-group\">\n                <div class=\"input-group\">\n                  <div class=\"input-group-prepend\">\n                    <span class=\"input-group-text\">\n                      <i class=\"material-icons\">lock_outline</i>\n                    </span>\n                  </div>\n                  <input formControlName=\"password\" type=\"password\" class=\"form-control\" placeholder=\"Password...\">\n                </div>\n              </span>\n            </div>\n            <div class=\"card-footer justify-content-center\">\n              <button class=\"btn btn-primary\" (click)=\"onSubmit()\">Login</button>\n            </div>\n          </div>\n        </form>\n        \n      </div>\n    </div>\n\n  </div>\n</div>\n"
+module.exports = "\n<div class=\"wrapper wrapper-full-page\">\n  <div class=\"page-header login-page header-filter\" filter-color=\"black\" style=\"background-image: url('./assets/img/login.jpg'); background-size: cover; background-position: top center;\">\n    <!--   you can change the color of the filter page using: data-color=\"blue | purple | green | orange | red | rose \" -->\n    <div class=\"container\">\n      <div class=\"col-lg-4 col-md-6 col-sm-6 ml-auto mr-auto\">\n        <form [formGroup]=\"loginForm\" class=\"form\" >\n          <div class=\"card card-login card-hidden\">\n            <div class=\"card-header card-header-rose text-center\">\n              <h4 class=\"card-title\">Log in</h4>\n              <!-- <div class=\"social-line\">\n                <a href=\"#pablo\" class=\"btn btn-just-icon btn-link btn-white\">\n                  <i class=\"fa fa-facebook-square\"></i>\n                </a>\n                <a href=\"#pablo\" class=\"btn btn-just-icon btn-link btn-white\">\n                  <i class=\"fa fa-twitter\"></i>\n                </a>\n                <a href=\"#pablo\" class=\"btn btn-just-icon btn-link btn-white\">\n                  <i class=\"fa fa-google-plus\"></i>\n                </a>\n              </div> -->\n            </div>\n            <div class=\"card-body \">\n             <!-- <p class=\"card-description text-center\">Or Be Classical</p>\n               <span class=\"bmd-form-group\">\n                <div class=\"input-group\">\n                  <div class=\"input-group-prepend\">\n                    <span class=\"input-group-text\">\n                      <i class=\"material-icons\">face</i>\n                    </span>\n                  </div>\n                  <input type=\"text\" class=\"form-control\" placeholder=\"First Name...\">\n                </div>\n              </span> -->\n              <span class=\"bmd-form-group\">\n                <div class=\"input-group\">\n                  <div class=\"input-group-prepend\">\n                    <span class=\"input-group-text\">\n                      <i class=\"material-icons\">email</i>\n                    </span>\n                  </div>\n                  <input formControlName=\"email\" type=\"email\" class=\"form-control\" placeholder=\"Email...\">\n                </div>\n              </span>\n              <span class=\"bmd-form-group\">\n                <div class=\"input-group\">\n                  <div class=\"input-group-prepend\">\n                    <span class=\"input-group-text\">\n                      <i class=\"material-icons\">lock_outline</i>\n                    </span>\n                  </div>\n                  <input formControlName=\"password\" type=\"password\" class=\"form-control\" placeholder=\"Password...\">\n                </div>\n              </span>\n            </div>\n            <div class=\"card-footer justify-content-center\">\n              <button class=\"btn btn-primary\" (click)=\"onSubmit()\" [disabled]=\"loginForm.invalid\">Login</button>\n            </div>\n          </div>\n        </form>\n        \n      </div>\n    </div>\n\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -105,11 +105,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var LoginComponent = /** @class */ (function () {
-    function LoginComponent(router, element, services) {
+    function LoginComponent(formBuilder, router, element, services) {
+        this.formBuilder = formBuilder;
         this.router = router;
         this.element = element;
         this.services = services;
         this.test = new Date();
+        this.loginBtnStatus = false;
         this.nativeElement = element.nativeElement;
         this.sidebarVisible = false;
         var user = localStorage.getItem('user');
@@ -118,9 +120,13 @@ var LoginComponent = /** @class */ (function () {
         }
     }
     LoginComponent.prototype.ngOnInit = function () {
-        this.loginForm = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"]({
-            email: new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](),
-            password: new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]()
+        // this.loginForm = new FormGroup({
+        //     email: new FormControl(),
+        //     password: new FormControl()
+        // })
+        this.loginForm = this.formBuilder.group({
+            email: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].email],
+            password: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required],
         });
         var navbar = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
@@ -157,7 +163,10 @@ var LoginComponent = /** @class */ (function () {
     };
     LoginComponent.prototype.onSubmit = function () {
         var _this = this;
-        console.log(this.loginForm.value);
+        // console.log(this.loginForm.value);
+        if (this.loginForm.valid) {
+            this.loginBtnStatus = true;
+        }
         this.services.logIn(this.loginForm.value).subscribe(function (res) {
             console.log(res);
             app_shared_services_SharedClass__WEBPACK_IMPORTED_MODULE_5__["SharedClass"].access_token = res['id'];
@@ -191,7 +200,7 @@ var LoginComponent = /** @class */ (function () {
             selector: 'app-login-cmp',
             template: __webpack_require__(/*! ./login.component.html */ "./src/app/pages/login/login.component.html")
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], _shared_services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"]])
+        __metadata("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"], _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], _shared_services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"]])
     ], LoginComponent);
     return LoginComponent;
 }());

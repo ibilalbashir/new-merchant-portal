@@ -10,12 +10,13 @@
 var map = {
 	"./calendar/calendar.module": [
 		"./src/app/calendar/calendar.module.ts",
-		"calendar-calendar-module~campaign-campaign-module~components-components-module~pages-pages-module",
+		"calendar-calendar-module~campaign-campaign-module~components-components-module~main-page-main-page-m~1eb7f346",
 		"calendar-calendar-module"
 	],
 	"./campaign/campaign.module": [
 		"./src/app/campaign/campaign.module.ts",
-		"calendar-calendar-module~campaign-campaign-module~components-components-module~pages-pages-module",
+		"calendar-calendar-module~campaign-campaign-module~components-components-module~main-page-main-page-m~1eb7f346",
+		"campaign-campaign-module~main-page-main-page-module",
 		"campaign-campaign-module"
 	],
 	"./charts/charts.module": [
@@ -24,12 +25,8 @@ var map = {
 	],
 	"./components/components.module": [
 		"./src/app/components/components.module.ts",
-		"calendar-calendar-module~campaign-campaign-module~components-components-module~pages-pages-module",
+		"calendar-calendar-module~campaign-campaign-module~components-components-module~main-page-main-page-m~1eb7f346",
 		"components-components-module"
-	],
-	"./dashboard/dashboard.module": [
-		"./src/app/dashboard/dashboard.module.ts",
-		"dashboard-dashboard-module"
 	],
 	"./forms/forms.module": [
 		"./src/app/forms/forms.module.ts",
@@ -39,13 +36,19 @@ var map = {
 		"./src/app/home/home.module.ts",
 		"home-home-module"
 	],
+	"./main-page/main-page.module": [
+		"./src/app/main-page/main-page.module.ts",
+		"calendar-calendar-module~campaign-campaign-module~components-components-module~main-page-main-page-m~1eb7f346",
+		"campaign-campaign-module~main-page-main-page-module",
+		"main-page-main-page-module"
+	],
 	"./maps/maps.module": [
 		"./src/app/maps/maps.module.ts",
 		"maps-maps-module"
 	],
 	"./pages/pages.module": [
 		"./src/app/pages/pages.module.ts",
-		"calendar-calendar-module~campaign-campaign-module~components-components-module~pages-pages-module",
+		"calendar-calendar-module~campaign-campaign-module~components-components-module~main-page-main-page-m~1eb7f346",
 		"pages-pages-module"
 	],
 	"./tables/tables.module": [
@@ -248,7 +251,8 @@ var MaterialModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatTabsModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatToolbarModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatTooltipModule"]
-            ]
+            ],
+            declarations: []
         })
     ], MaterialModule);
     return MaterialModule;
@@ -263,7 +267,7 @@ var AppModule = /** @class */ (function () {
                 _angular_common__WEBPACK_IMPORTED_MODULE_4__["CommonModule"],
                 _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_1__["BrowserAnimationsModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
-                _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(_app_routing__WEBPACK_IMPORTED_MODULE_14__["AppRoutes"]),
+                _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(_app_routing__WEBPACK_IMPORTED_MODULE_14__["AppRoutes"], { useHash: true }),
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_15__["HttpClientModule"],
                 MaterialModule,
                 _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatNativeDateModule"],
@@ -272,11 +276,7 @@ var AppModule = /** @class */ (function () {
                 _shared_footer_footer_module__WEBPACK_IMPORTED_MODULE_9__["FooterModule"],
                 _shared_fixedplugin_fixedplugin_module__WEBPACK_IMPORTED_MODULE_11__["FixedpluginModule"]
             ],
-            declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"],
-                _layouts_admin_admin_layout_component__WEBPACK_IMPORTED_MODULE_12__["AdminLayoutComponent"],
-                _layouts_auth_auth_layout_component__WEBPACK_IMPORTED_MODULE_13__["AuthLayoutComponent"]
-            ],
+            declarations: [_app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"], _layouts_admin_admin_layout_component__WEBPACK_IMPORTED_MODULE_12__["AdminLayoutComponent"], _layouts_auth_auth_layout_component__WEBPACK_IMPORTED_MODULE_13__["AuthLayoutComponent"]],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]],
             providers: [
                 {
@@ -284,6 +284,10 @@ var AppModule = /** @class */ (function () {
                     useValue: {
                         separatorKeyCodes: [_angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_17__["ENTER"], _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_17__["COMMA"]]
                     }
+                },
+                {
+                    provide: _angular_common__WEBPACK_IMPORTED_MODULE_4__["LocationStrategy"],
+                    useClass: _angular_common__WEBPACK_IMPORTED_MODULE_4__["HashLocationStrategy"]
                 },
                 _auth_guard__WEBPACK_IMPORTED_MODULE_16__["AuthGuard"]
             ]
@@ -323,11 +327,13 @@ var AppRoutes = [
         children: [
             {
                 path: '',
-                loadChildren: './dashboard/dashboard.module#DashboardModule'
-            }, {
+                loadChildren: './main-page/main-page.module#MainPageModule'
+            },
+            {
                 path: 'home',
                 loadChildren: './home/home.module#HomeModule'
-            }, {
+            },
+            {
                 path: 'components',
                 loadChildren: './components/components.module#ComponentsModule'
             },
@@ -338,30 +344,38 @@ var AppRoutes = [
             {
                 path: 'forms',
                 loadChildren: './forms/forms.module#Forms'
-            }, {
+            },
+            {
                 path: 'tables',
                 loadChildren: './tables/tables.module#TablesModule'
-            }, {
+            },
+            {
                 path: 'maps',
                 loadChildren: './maps/maps.module#MapsModule'
-            }, {
+            },
+            {
                 path: 'widgets',
                 loadChildren: './widgets/widgets.module#WidgetsModule'
-            }, {
+            },
+            {
                 path: 'charts',
                 loadChildren: './charts/charts.module#ChartsModule'
-            }, {
+            },
+            {
                 path: 'calendar',
                 loadChildren: './calendar/calendar.module#CalendarModule'
-            }, {
+            },
+            {
                 path: '',
                 loadChildren: './userpage/user.module#UserModule'
-            }, {
+            },
+            {
                 path: '',
                 loadChildren: './timeline/timeline.module#TimelineModule'
             }
         ]
-    }, {
+    },
+    {
         path: '',
         loadChildren: './pages/pages.module#PagesModule'
     }
@@ -434,7 +448,7 @@ var AuthGuard = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"wrapper\">\n    <div class=\"sidebar\" data-color=\"white\" data-background-color=\"red\" data-image=\"./assets/img/sidebar-1.jpg\">\n        <app-sidebar-cmp></app-sidebar-cmp>\n        <div class=\"sidebar-background\" style=\"background-image: url(assets/img/sidebar-1.jpg)\"></div>\n    </div>\n    <div class=\"main-panel\">\n        <app-navbar-cmp></app-navbar-cmp>\n        <router-outlet></router-outlet>\n        <div *ngIf=\"!isMap()\">\n            <app-footer-cmp></app-footer-cmp>\n        </div>\n    </div>\n    <app-fixedplugin></app-fixedplugin>\n</div>\n"
+module.exports = "<div class=\"wrapper\">\n  <div class=\"sidebar\" data-color=\"white\" data-background-color=\"red\" data-image=\"./assets/img/sidebar-1.jpg\">\n    <app-sidebar-cmp></app-sidebar-cmp>\n    <div class=\"sidebar-background\" style=\"background-image: url(assets/img/sidebar-1.jpg)\"></div>\n  </div>\n  <div class=\"main-panel\">\n    <app-navbar-cmp></app-navbar-cmp>\n    <router-outlet></router-outlet>\n    <div *ngIf=\"!isMap()\">\n      <app-footer-cmp></app-footer-cmp>\n    </div>\n  </div>\n  <!-- <app-fixedplugin></app-fixedplugin> -->\n</div>"
 
 /***/ }),
 
@@ -1659,7 +1673,7 @@ var AuthService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n\n        <div class=\"logo\">\n          <a class=\"simple-text logo-mini\">\n            <div class=\"logo-img\">\n                <!-- <img src=\"/assets/img/angular2-logo-white.png\"/> -->\n            </div>\n          </a>\n            <a href=\"#\" class=\"simple-text logo-normal\">\n              Uninama\n            </a>\n        </div>\n\n\n        <div class=\"sidebar-wrapper\">\n\n            <div class=\"user\">\n                <div class=\"photo\">\n                    <img src=\"./assets/img/faces/avatar1.jpg\" />\n                </div>\n                <div class=\"user-info\">\n                    <a data-toggle=\"collapse\" href=\"#collapseExample\" class=\"collapsed\">\n                        <span>\n                            {{merchant_name}}\n                            <b class=\"caret\"></b>\n                        </span>\n                    </a>\n                    <div class=\"collapse\" id=\"collapseExample\">\n                        <ul class=\"nav\">\n                            <li class=\"nav-item\">\n                                <a href=\"#\" class=\"nav-link\">\n                                    <span class=\"sidebar-mini\">LG</span> \n                                    <span (click)=\"onLogOut()\"  class=\"sidebar-normal\">Logout</span>\n                                </a>\n                            </li>\n                            \n                            \n                        </ul>\n                    </div>\n                </div>\n            </div>\n            <div *ngIf=\"isMobileMenu()\">\n              <form class=\"navbar-form\">\n                <span class=\"bmd-form-group\"><div class=\"input-group no-border\">\n                  <input type=\"text\" value=\"\" class=\"form-control\" placeholder=\"Search...\">\n                  <button mat-raised-button type=\"submit\" class=\"btn btn-white btn-round btn-just-icon\">\n                    <i class=\"material-icons\">search</i>\n                    <div class=\"ripple-container\"></div>\n                  </button>\n                </div></span>\n              </form>\n              <ul class=\"nav navbar-nav nav-mobile-menu\">\n                <li class=\"nav-item\">\n                  <a class=\"nav-link\" href=\"#pablo\">\n                    <i class=\"material-icons\">dashboard</i>\n                    <p>\n                      <span class=\"d-lg-none d-md-block\">Stats</span>\n                    </p>\n                  </a>\n                </li>\n                <li class=\"nav-item dropdown\">\n                  <a class=\"nav-link\" href=\"#pablo\" id=\"navbarDropdownMenuLink\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n                    <i class=\"material-icons\">notifications</i>\n                    <span class=\"notification\">5</span>\n                    <p>\n                      <span class=\"d-lg-none d-md-block\">Some Actions</span>\n                    </p>\n                  </a>\n                  <div class=\"dropdown-menu dropdown-menu-right\" aria-labelledby=\"navbarDropdownMenuLink\">\n                    <a class=\"dropdown-item\" href=\"#\">Mike John responded to your email</a>\n                    <a class=\"dropdown-item\" href=\"#\">You have 5 new tasks</a>\n                    <a class=\"dropdown-item\" href=\"#\">You're now friend with Andrew</a>\n                    <a class=\"dropdown-item\" href=\"#\">Another Notification</a>\n                    <a class=\"dropdown-item\" href=\"#\">Another One</a>\n                  </div>\n                </li>\n                <li class=\"nav-item\">\n                  <a class=\"nav-link\" href=\"#pablo\">\n                    <i class=\"material-icons\">person</i>\n                    <p>\n                      <span class=\"d-lg-none d-md-block\">Account</span>\n                    </p>\n                  </a>\n                </li>\n              </ul>\n            </div>\n            <ul class=\"nav\">\n                <li routerLinkActive=\"active\" *ngFor=\"let menuitem of menuItems\" class=\"nav-item\">\n                    <!--If is a single link-->\n                    <a [routerLink]=\"[menuitem.path]\" *ngIf=\"menuitem.type === 'link'\" class=\"nav-link\">\n                        <i class=\"material-icons\">{{menuitem.icontype}}</i>\n                        <p>{{menuitem.title}}</p>\n                    </a>\n                    <!--If it have a submenu-->\n                    <a data-toggle=\"collapse\" href=\"#{{menuitem.collapse}}\" *ngIf=\"menuitem.type === 'sub'\" (click)=\"updatePS()\" class=\"nav-link\">\n                        <i class=\"material-icons\">{{menuitem.icontype}}</i>\n                        <p>{{menuitem.title}}<b class=\"caret\"></b></p>\n                    </a>\n\n                    <!--Display the submenu items-->\n                    <div id=\"{{menuitem.collapse}}\" class=\"collapse\" *ngIf=\"menuitem.type === 'sub'\">\n                        <ul class=\"nav\">\n                            <li routerLinkActive=\"active\" *ngFor=\"let childitem of menuitem.children\" class=\"nav-item\">\n                                <a [routerLink]=\"[menuitem.path, childitem.path]\" class=\"nav-link\">\n                                    <span class=\"sidebar-mini\">{{childitem.ab}}</span>\n                                    <span class=\"sidebar-normal\">{{childitem.title}}</span>\n                                </a>\n                            </li>\n                        </ul>\n                    </div>\n                </li>\n                <!-- <li class=\"nav-item\">\n                    <a href=\"http://md-pro-angular.creative-tim.com/documentation/tutorial?ref=md-pro-archive\" class=\"nav-link\">\n                        <i class=\"material-icons\">school</i>\n                        <p>Documentation</p>\n                    </a>\n                </li> -->\n            </ul>\n\n        </div>\n"
+module.exports = "<div class=\"logo\">\n  <a class=\"simple-text logo-mini\">\n    <div class=\"logo-img\">\n      <!-- <img src=\"/assets/img/angular2-logo-white.png\"/> -->\n    </div>\n  </a>\n  <a href=\"#\" class=\"simple-text logo-normal\">\n    Uninama<br> Merchant Portal\n  </a>\n</div>\n\n\n<div class=\"sidebar-wrapper\">\n\n  <div class=\"user\">\n    <div class=\"photo\">\n      <img src=\"./assets/img/faces/avatar1.jpg\" />\n    </div>\n    <div class=\"user-info\">\n      <a data-toggle=\"collapse\" href=\"#collapseExample\" class=\"collapsed\">\n        <span>\n          {{merchant_name}}\n          <b class=\"caret\"></b>\n        </span>\n      </a>\n      <div class=\"collapse\" id=\"collapseExample\">\n        <ul class=\"nav\">\n          <li class=\"nav-item\">\n            <a href=\"#\" class=\"nav-link\">\n              <span class=\"sidebar-mini\">LG</span>\n              <span (click)=\"onLogOut()\" class=\"sidebar-normal\">Logout</span>\n            </a>\n          </li>\n\n\n        </ul>\n      </div>\n    </div>\n  </div>\n  <div *ngIf=\"isMobileMenu()\">\n    <form class=\"navbar-form\">\n      <span class=\"bmd-form-group\">\n        <div class=\"input-group no-border\">\n          <input type=\"text\" value=\"\" class=\"form-control\" placeholder=\"Search...\">\n          <button mat-raised-button type=\"submit\" class=\"btn btn-white btn-round btn-just-icon\">\n            <i class=\"material-icons\">search</i>\n            <div class=\"ripple-container\"></div>\n          </button>\n        </div>\n      </span>\n    </form>\n    <ul class=\"nav navbar-nav nav-mobile-menu\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" href=\"\">\n          <i class=\"material-icons\">dashboard</i>\n          <p>\n            <span class=\"d-lg-none d-md-block\">Stats</span>\n          </p>\n        </a>\n      </li>\n      <li class=\"nav-item dropdown\">\n        <a class=\"nav-link\" href=\"#pablo\" id=\"navbarDropdownMenuLink\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n          <i class=\"material-icons\">notifications</i>\n          <span class=\"notification\">5</span>\n          <p>\n            <span class=\"d-lg-none d-md-block\">Some Actions</span>\n          </p>\n        </a>\n        <div class=\"dropdown-menu dropdown-menu-right\" aria-labelledby=\"navbarDropdownMenuLink\">\n          <a class=\"dropdown-item\" href=\"#\">Mike John responded to your email</a>\n          <a class=\"dropdown-item\" href=\"#\">You have 5 new tasks</a>\n          <a class=\"dropdown-item\" href=\"#\">You're now friend with Andrew</a>\n          <a class=\"dropdown-item\" href=\"#\">Another Notification</a>\n          <a class=\"dropdown-item\" href=\"#\">Another One</a>\n        </div>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" href=\"#pablo\">\n          <i class=\"material-icons\">person</i>\n          <p>\n            <span class=\"d-lg-none d-md-block\">Account</span>\n          </p>\n        </a>\n      </li>\n    </ul>\n  </div>\n  <ul class=\"nav\">\n    <li routerLinkActive=\"active\" *ngFor=\"let menuitem of menuItems\" class=\"nav-item\">\n      <!--If is a single link-->\n      <a [routerLink]=\"[menuitem.path]\" *ngIf=\"menuitem.type === 'link'\" class=\"nav-link\">\n        <i class=\"material-icons\">{{menuitem.icontype}}</i>\n        <p>{{menuitem.title}}</p>\n      </a>\n      <!--If it have a submenu-->\n      <a data-toggle=\"collapse\" href=\"#{{menuitem.collapse}}\" *ngIf=\"menuitem.type === 'sub'\" (click)=\"updatePS()\" class=\"nav-link\">\n        <i class=\"material-icons\">{{menuitem.icontype}}</i>\n        <p>{{menuitem.title}}<b class=\"caret\"></b></p>\n      </a>\n\n      <!--Display the submenu items-->\n      <div id=\"{{menuitem.collapse}}\" class=\"collapse\" *ngIf=\"menuitem.type === 'sub'\">\n        <ul class=\"nav\">\n          <li routerLinkActive=\"active\" *ngFor=\"let childitem of menuitem.children\" class=\"nav-item\">\n            <a [routerLink]=\"[menuitem.path, childitem.path]\" class=\"nav-link\">\n              <span class=\"sidebar-mini\">{{childitem.ab}}</span>\n              <span class=\"sidebar-normal\">{{childitem.title}}</span>\n            </a>\n          </li>\n        </ul>\n      </div>\n    </li>\n    <!-- <li class=\"nav-item\">\n                    <a href=\"http://md-pro-angular.creative-tim.com/documentation/tutorial?ref=md-pro-archive\" class=\"nav-link\">\n                        <i class=\"material-icons\">school</i>\n                        <p>Documentation</p>\n                    </a>\n                </li> -->\n  </ul>\n\n</div>"
 
 /***/ }),
 
@@ -1690,8 +1704,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 // Menu Items
-var ROUTES = [{
-        path: '/dashboard',
+var ROUTES = [
+    {
+        path: '/main',
         title: 'Dashboard',
         type: 'link',
         icontype: 'dashboard'
@@ -1792,19 +1807,22 @@ var SidebarComponent = /** @class */ (function () {
         }
         return true;
     };
-    ;
     SidebarComponent.prototype.ngOnInit = function () {
         this.menuItems = ROUTES.filter(function (menuItem) { return menuItem; });
     };
     SidebarComponent.prototype.updatePS = function () {
         if (window.matchMedia("(min-width: 960px)").matches && !this.isMac()) {
-            var elemSidebar = document.querySelector('.sidebar .sidebar-wrapper');
-            var ps = new perfect_scrollbar__WEBPACK_IMPORTED_MODULE_1__["default"](elemSidebar, { wheelSpeed: 2, suppressScrollX: true });
+            var elemSidebar = (document.querySelector('.sidebar .sidebar-wrapper'));
+            var ps = new perfect_scrollbar__WEBPACK_IMPORTED_MODULE_1__["default"](elemSidebar, {
+                wheelSpeed: 2,
+                suppressScrollX: true
+            });
         }
     };
     SidebarComponent.prototype.isMac = function () {
         var bool = false;
-        if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
+        if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 ||
+            navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
             bool = true;
         }
         return bool;
@@ -1816,7 +1834,7 @@ var SidebarComponent = /** @class */ (function () {
     SidebarComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-sidebar-cmp',
-            template: __webpack_require__(/*! ./sidebar.component.html */ "./src/app/sidebar/sidebar.component.html"),
+            template: __webpack_require__(/*! ./sidebar.component.html */ "./src/app/sidebar/sidebar.component.html")
         }),
         __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], SidebarComponent);
@@ -1884,7 +1902,9 @@ __webpack_require__.r(__webpack_exports__);
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
     production: false,
-    url: 'http://13.126.228.192:3000/api'
+    url: 'http://13.126.228.192:3000/api',
+    navigatedFromArchived: false,
+    campaignIdToReActivate: ''
 };
 
 
