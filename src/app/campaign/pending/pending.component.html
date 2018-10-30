@@ -4,7 +4,7 @@
     <!-- <input type="button" class="btn btn-primary" value="Create campagin" (click) = "CreateCampaign()"> -->
     <div class="row">
 
-      <div class="col-3" *ngFor="let row of $getCampaign | async">
+      <div class="col-md-3 col-sm-12 col-xs-12" *ngFor="let row of $getCampaign | async">
         <app-campaign-card [data]="row"></app-campaign-card>
 
       </div>

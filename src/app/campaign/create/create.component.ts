@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ImageCroppedEvent } from 'ngx-image-cropper/src/image-cropper.component';
+import { Router } from '@angular/router';
 
 declare const $: any;
 
@@ -121,7 +122,8 @@ export class CreateComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private campaignService: CampaignService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {
     this.firstFormGroup = formBuilder.group({
       title: ['', Validators.required],
@@ -475,6 +477,7 @@ export class CreateComponent implements OnInit {
         const id = res['id'];
         this.imageFunc(id);
         swal('Campaign Created', 'Campaign Created Successfully', 'success');
+        this.router.navigateByUrl('/main');
       },
       err => {
         swal('Error', 'Something Went Wrong', 'error');

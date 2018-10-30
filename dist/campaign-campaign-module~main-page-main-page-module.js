@@ -218,7 +218,7 @@ var CampaignDetailComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"md-dialog-container\">\n  <form class=\"text-center\" [formGroup]=\"verifyForm\">\n    <h2>Coupon code Verification</h2>\n    <mat-dialog-content>\n      <input type=\"text\" placeholder=\"Enter Coupon Code\" formControlName=\"couponCode\">\n    </mat-dialog-content>\n    <mat-dialog-actions>\n      <button mat-raised-button (click)=\"verifyCouponCode()\" class=\"btn btn-success\">Verify\n      </button>\n      <button mat-button mat-dialog-close>cancle</button>\n    </mat-dialog-actions>\n  </form>\n</div>"
+module.exports = "<div class=\"md-dialog-container\">\n  <form class=\"text-center\" [formGroup]=\"verifyForm\">\n    <h2>Coupon code Verification</h2>\n    <mat-dialog-content>\n      <input type=\"text\" placeholder=\"Enter Coupon Code\" formControlName=\"couponCode\">\n    </mat-dialog-content>\n    <mat-dialog-actions>\n\n\n      <button mat-raised-button (click)=\"verifyCouponCode()\" class=\"btn btn-success\">Verify\n      </button>\n\n      <button mat-button mat-dialog-close>cancel</button>\n    </mat-dialog-actions>\n  </form>\n</div>"
 
 /***/ }),
 

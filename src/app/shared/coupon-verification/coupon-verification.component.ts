@@ -49,6 +49,7 @@ export class CouponVerificationComponent implements OnInit {
             title: 'Oops...',
             text: err['error'].error.message
           });
+
           this.verifyForm.get('couponCode').setValue('');
         }
       );
