@@ -487,7 +487,7 @@ export class CreateComponent implements OnInit {
   imageFunc(id) {
     this.imageObj = {
       base64: this.croppedImage,
-      container: '/campaign',
+      container: 'campaign',
       fileName: id,
       model: 'Campaign',
       id: id,
