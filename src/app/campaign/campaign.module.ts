@@ -1,3 +1,4 @@
+import { MatChipsModule } from '@angular/material/chips';
 import { CampaignCardComponent } from './../shared/campaign-card/campaign-card.component';
 import { MaterialModule } from './../app.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -45,7 +46,8 @@ import { CreateCategoryComponent } from './create-category/create-category.compo
     MatRadioModule,
     MaterialModule,
     SharedModule,
-    ImageCropperModule
+    ImageCropperModule,
+    MatChipsModule
   ],
   declarations: [
     CreateComponent,

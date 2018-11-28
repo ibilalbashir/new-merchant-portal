@@ -41,14 +41,11 @@
                     <mat-option *ngFor="let row of (categoryObj$ | async)" [value]="row?.id" (onSelectionChange)="categoryCheckedFn()">
                       {{ row?.name }}
                     </mat-option>
-                    <!-- <mat-option (click)="openDialog()">Can't find my Category</mat-option> -->
 
 
                   </mat-select>
                 </mat-form-field>
-                <!-- <mat-form-field *ngIf="newCategoryChecked">
-                  <input matInput placeholder="Enter new Category name" formControlName="newCategoryText" maxlength="30" required>
-                </mat-form-field> -->
+
 
                 <div class="row">
                   <!--Row 3-->
@@ -85,11 +82,23 @@
 
                 </div>
                 <!--End of row 3-->
+                <!-- row 4-->
+                <p>Selected braches</p>
+                <mat-chip-list>
+                  <mat-chip id="chips" *ngFor="let row of selectedBranches;let i = index" [value]="row?.id" (click)="chipUnSelectFn(i, row)">{{row?.location}}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                  </mat-chip>
+                </mat-chip-list>
+                <!-- end of row 4-->
+                <hr>
+                <mat-chip-list>
+                  <mat-chip (click)="selectAllChips()">Select all</mat-chip>
+                  <mat-chip *ngFor="let row of (branchObj$ | async); let i = index" [value]="row?.id" (click)="chipSelectFn(i,row)">{{row?.location}}</mat-chip>
 
-
-
+                </mat-chip-list>
+                <hr>
                 <div class=" border mat-elevation-z1 for-admin">
-                  <p class="for-admin-p"><u matTooltip="This information won't be displayed on website">This informtion won't be dislayed</u></p>
+                  <p class="for-admin-p"><u matTooltip="This information won't be displayed on website">This information won't be dislayed</u></p>
 
                   <div class=row>
 
@@ -144,25 +153,7 @@
                 <ng-template matStepLabel>Campaign Creation</ng-template>
                 <div class="card-body">
                   <div class="tab-content">
-                    <!-- <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                      <div class="fileinput-new thumbnail">
-                        <img src="../../../assets/img/image_placeholder.jpg" alt="...">
-                      </div>
-                      <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                      <div>
-                        <span class="btn btn-primary btn-round btn-file">
-                          <span class="fileinput-new">Select
-                            Campaign
-                            Image</span>
-                          <span class="fileinput-exists">Change</span>
 
-                          
-                        </span>
-                        <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput" (change)="clear()">
-                          <i class="fa fa-times"></i>
-                          Remove</a>
-                      </div>
-                    </div> -->
                     <h4>Choose Campaign Image</h4>
                     <input formControlName="imagePicker" class="fileinput" type='file' (change)="fileChangeEvent($event)" accept=".jpg, .jpeg, .png" required />
                     <image-cropper *ngIf="imageCropperStatus" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="370/270" [resizeToWidth]="370" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (loadImageFailed)="loadImageFailed()"></image-cropper>
@@ -305,52 +296,7 @@
           </form>
 
         </mat-step>
-        <!-- <mat-step [stepControl]="thirdFormGroup" [optional]="isOptional">
-          <div class="container">
-            <form [formGroup]="thirdFormGroup">
 
-              <ng-template matStepLabel>Referral Perks</ng-template>
-              <div class="row">
-                <mat-checkbox *ngIf="ambChecked" (change)="refCheckBoxClick($event.checked)">Do
-                  you want referrals for your cammpaign?</mat-checkbox>
-              </div>
-              <div class="row" *ngIf="refChecked">
-                <mat-radio-group>
-                  <mat-radio-button (change)="sameRefPerksClick($event.checked)" value="1">Same perks as normal User
-                  </mat-radio-button>
-                  <mat-radio-button (change)="sepRefPerksClick($event.checked)" value="2">define Referral perks
-                    separately</mat-radio-button>
-                </mat-radio-group>
-              </div>
-              <div class="row" *ngIf="sepRefPerksChecked">
-                <div class="col-6">
-                  <mat-form-field>
-                    <mat-select placeholder="Discount Type" formControlName="referralDiscount" (selectionChange)="refDiscountTypesSelection($event.value)">
-                      <mat-option [value]="row.value" *ngFor="let row of discountTypes">
-                        {{row.viewValue}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div class="col-6">
-                  <mat-form-field>
-                    <input min="0" matInput [placeholder]="refDiscountPlaceholder" formControlName="referralDiscountAmount" [type]="discountTxtType">
-                  </mat-form-field>
-                </div>
-              </div>
-
-
-
-
-
-              <div>
-                <button class="btn btn-round btn-primary" mat-button matStepperPrevious>Back</button>
-                <button (click)="SetPayload()" style="float: right;" class="btn btn-round btn-lg" mat-button>Create
-                  Campaign</button>
-              </div>
-            </form>
-          </div>
-        </mat-step> -->
       </mat-horizontal-stepper>
     </div>
   </div>

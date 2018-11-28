@@ -84,9 +84,9 @@ export class CampaignService {
     return this.http.get(
       `${this.url}/Merchants/${
         this.merchantId
-      }/campaigns?filter[where][endDate][gt]=${
+      }/campaigns?filter[where][and][0][endDate][gt]=${
         this.currentDate
-      }&filter[where][isApproved]=false&filters[where][isRejected]=false&access_token=${
+      }&filter[where][and][1][isApproved]=false&filter[where][and][2][isRejected]=false&access_token=${
         SharedClass.access_token
       }`
     );
@@ -95,6 +95,13 @@ export class CampaignService {
   verifyCouponCode(id, code): Observable<Object> {
     return this.http.get(
       `${this.url}/Campaigns/${id}/verify-coupon?code=${code}`
+    );
+  }
+  getBranches(): Observable<Object> {
+    return this.http.get(
+      `${this.url}/Merchants/${this.merchantId}/branches?access_token=${
+        SharedClass.access_token
+      }`
     );
   }
 }

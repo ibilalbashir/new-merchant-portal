@@ -3,14 +3,15 @@ import { MatDialog } from '@angular/material';
 import { CreateCategoryComponent } from './../create-category/create-category.component';
 import swal from 'sweetalert2';
 import { CampaignService } from './../../shared/services/campaign.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+
 import {
   Validators,
   FormGroup,
   FormBuilder,
   FormControl
 } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ImageCroppedEvent } from 'ngx-image-cropper/src/image-cropper.component';
 import { Router } from '@angular/router';
 
@@ -31,6 +32,7 @@ interface FileReaderEvent extends Event {
   styleUrls: ['./create.component.scss']
 })
 export class CreateComponent implements OnInit {
+  isSelectAll = false;
   temp: any;
   imagePicked = false;
   imageChangedEvent: any = '';
@@ -41,6 +43,7 @@ export class CreateComponent implements OnInit {
   file: any;
   categoryObj$: Observable<object>;
   ambassadorObj$: Observable<object>;
+  branchObj$: Observable<object>;
   isLinear = false;
   status = true;
   discountTxtType = 'number';
@@ -61,8 +64,9 @@ export class CreateComponent implements OnInit {
   secondFormGroup: FormGroup;
   imageFormGroup: FormGroup;
   // thirdFormGroup: FormGroup;
-
+  selectedBranches = [];
   payloadObj = {
+    branchIds: [],
     ambassadorIds: [],
     campaignType: '',
     categoryId: '',
@@ -105,8 +109,7 @@ export class CreateComponent implements OnInit {
   ];
   campaignTypes = [
     { value: 'online', viewValue: 'Online' },
-    { value: 'offline', viewValue: 'Offline' },
-    { value: 'both', viewValue: 'Both' }
+    { value: 'offline', viewValue: 'Offline' }
   ];
   discountTypes = [
     { value: 'fixed', viewValue: 'Fixed' },
@@ -123,7 +126,8 @@ export class CreateComponent implements OnInit {
     private formBuilder: FormBuilder,
     private campaignService: CampaignService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {
     this.firstFormGroup = formBuilder.group({
       title: ['', Validators.required],
@@ -137,7 +141,9 @@ export class CreateComponent implements OnInit {
       discountUtilization: ['', Validators.required],
       categoryId: ['', Validators.required],
       number: ['', Validators.required],
-      baseDiscountAmount: ['', Validators.required]
+      baseDiscountAmount: ['', Validators.required],
+      selectedChips: [''],
+      nonSelectedChips: ['']
       // newCategoryText: ['']
     });
     this.secondFormGroup = formBuilder.group({
@@ -158,6 +164,10 @@ export class CreateComponent implements OnInit {
   ngOnInit() {
     this.categoryObj$ = this.campaignService.getCategories(); // get Categories call
     this.ambassadorObj$ = this.campaignService.getAmbassadors(); // get all ambassadorss
+    this.branchObj$ = this.campaignService.getBranches(); // get all branches
+    this.branchObj$.subscribe(res => {
+      console.log('these are locations', res);
+    });
 
     if (
       environment.navigatedFromArchived === true &&
@@ -210,6 +220,36 @@ export class CreateComponent implements OnInit {
         }
       );
   }
+  selectAllChips() {
+    this.isSelectAll = true;
+    this.branchObj$.subscribe(res => {
+      this.selectedBranches = JSON.parse(JSON.stringify(res));
+
+      const a = this.selectedBranches.map(x => x['id']);
+      console.log('selected branches are', a);
+    });
+  }
+  chipSelectFn(index, obj) {
+    this.branchObj$.subscribe(branches => {
+      const a = JSON.parse(JSON.stringify(branches));
+
+      a.splice(index, 1);
+      this.selectedBranches.push(obj);
+      this.branchObj$ = of(a);
+      this.cd.detectChanges();
+    });
+  }
+  chipUnSelectFn(index, obj) {
+    console.log('del');
+    this.selectedBranches.splice(index, 1);
+
+    this.branchObj$.subscribe(res => {
+      const a = JSON.parse(JSON.stringify(res));
+      a.push(obj);
+      this.branchObj$ = of(a);
+    });
+  }
+
   selectedNoOfWeeks(val) {
     console.log(val);
   }
@@ -341,9 +381,16 @@ export class CreateComponent implements OnInit {
 
   // Setting values to payload
   SetPayload() {
-    this.payloadObj.ambassadorIds = this.secondFormGroup.get(
-      'ambassadorIds'
-    ).value;
+    if (this.secondFormGroup.get('ambassadorIds').value === null) {
+      this.payloadObj.ambassadorIds = [];
+    } else {
+      this.payloadObj.ambassadorIds = this.secondFormGroup.get(
+        'ambassadorIds'
+      ).value;
+    }
+    const ids = this.selectedBranches.map(x => x['id']);
+
+    this.payloadObj.branchIds = ids;
     this.payloadObj.campaignType = this.firstFormGroup.get(
       'campaignType'
     ).value;
