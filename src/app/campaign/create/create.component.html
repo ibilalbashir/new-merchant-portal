@@ -92,7 +92,7 @@
                 <!-- end of row 4-->
                 <hr>
                 <mat-chip-list>
-                  <mat-chip (click)="selectAllChips()">Select all</mat-chip>
+                  <mat-chip *ngIf="isSelectAllBtn" (click)="selectAllChips()">Select all</mat-chip>
                   <mat-chip *ngFor="let row of (branchObj$ | async); let i = index" [value]="row?.id" (click)="chipSelectFn(i,row)">{{row?.location}}</mat-chip>
 
                 </mat-chip-list>

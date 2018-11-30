@@ -92,9 +92,11 @@ export class CampaignService {
     );
   }
 
-  verifyCouponCode(id, code): Observable<Object> {
+  verifyCouponCode(id, code, branchId): Observable<Object> {
     return this.http.get(
-      `${this.url}/Campaigns/${id}/verify-coupon?code=${code}`
+      `${
+        this.url
+      }/Campaigns/${id}/verify-coupon?code=${code}&branchId=${branchId}`
     );
   }
   getBranches(): Observable<Object> {

@@ -3,6 +3,7 @@ import { CampaignService } from './../services/campaign.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import swal from 'sweetalert2';
+import { Observable } from 'rxjs/internal/Observable';
 
 export interface DialogData {
   id: string;
@@ -14,8 +15,12 @@ export interface DialogData {
   styleUrls: ['./coupon-verification.component.scss']
 })
 export class CouponVerificationComponent implements OnInit {
+  selectionText;
+  branchObj$: Observable<object>;
+  selectedBranch: any;
   verifyForm: FormGroup;
   cId: string;
+  selectedIndex = -1;
   constructor(
     private formBuilder: FormBuilder,
     private campaignService: CampaignService,
@@ -28,30 +33,55 @@ export class CouponVerificationComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
-  verifyCouponCode() {
-    this.campaignService
-      .verifyCouponCode(this.cId, this.verifyForm.get('couponCode').value)
-      .subscribe(
-        res => {
-          console.log(res);
-          swal({
-            type: 'success',
-            title: 'Verified',
-            text: 'Coupon Code is Valid'
-          });
-          this.verifyForm.get('couponCode').setValue('');
-        },
-        err => {
-          console.log(err['error'].error.message);
-          swal({
-            type: 'error',
-            title: 'Oops...',
-            text: err['error'].error.message
-          });
+  ngOnInit() {
+    this.branchObj$ = this.campaignService.getBranches();
+  }
+  selectBranch(index) {
+    this.selectionText = '';
+    this.selectedIndex = index;
 
-          this.verifyForm.get('couponCode').setValue('');
-        }
-      );
+    this.branchObj$.subscribe(res => {
+      this.selectedBranch = res[index]['id'];
+      console.log('current select branch', res[index]['id']);
+    });
+  }
+  verifyCouponCode() {
+    console.log('selected branch', this.selectedBranch);
+    if (this.selectedBranch === undefined) {
+      this.selectionText = '*Please Select your branch\n';
+      console.log('select a branch first');
+    } else {
+      if (this.verifyForm.get('couponCode').value === '') {
+        swal('Please Enter Coupon code');
+      } else {
+        this.campaignService
+          .verifyCouponCode(
+            this.cId,
+            this.verifyForm.get('couponCode').value,
+            this.selectedBranch
+          )
+          .subscribe(
+            res => {
+              console.log(res);
+              swal({
+                type: 'success',
+                title: 'Verified',
+                text: 'Coupon Code is Valid'
+              });
+              this.verifyForm.get('couponCode').setValue('');
+            },
+            err => {
+              console.log(err['error'].error.message);
+              swal({
+                type: 'error',
+                title: 'Oops...',
+                text: err['error'].error.message
+              });
+
+              this.verifyForm.get('couponCode').setValue('');
+            }
+          );
+      }
+    }
   }
 }

@@ -1,16 +1,31 @@
 <div class="md-dialog-container">
   <form class="text-center" [formGroup]="verifyForm">
     <h2>Coupon code Verification</h2>
+    <p>Select your branch</p>
     <mat-dialog-content>
+      <mat-chip-list>
+        <mat-chip [ngClass]="{'bg-success': i === selectedIndex}" *ngFor="let row of (branchObj$ | async); let i = index" [value]="row?.id" (click)="selectBranch(i)">{{row?.location}}</mat-chip>
+      </mat-chip-list>
+
+      <hr>
+
       <input type="text" placeholder="Enter Coupon Code" formControlName="couponCode">
     </mat-dialog-content>
+    <div class="row">
+      <div class="col-6">
+        <p id="selectionParagraph">{{selectionText}}</p>
+      </div>
+    </div>
     <mat-dialog-actions>
+
+
 
 
       <button mat-raised-button (click)="verifyCouponCode()" class="btn btn-success">Verify
       </button>
 
       <button mat-button mat-dialog-close>cancel</button>
+
     </mat-dialog-actions>
   </form>
 </div>

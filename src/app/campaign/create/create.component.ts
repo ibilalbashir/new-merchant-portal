@@ -32,6 +32,7 @@ interface FileReaderEvent extends Event {
   styleUrls: ['./create.component.scss']
 })
 export class CreateComponent implements OnInit {
+  isSelectAllBtn = true;
   isSelectAll = false;
   temp: any;
   imagePicked = false;
@@ -44,6 +45,7 @@ export class CreateComponent implements OnInit {
   categoryObj$: Observable<object>;
   ambassadorObj$: Observable<object>;
   branchObj$: Observable<object>;
+  branchCount = 0;
   isLinear = false;
   status = true;
   discountTxtType = 'number';
@@ -220,16 +222,28 @@ export class CreateComponent implements OnInit {
         }
       );
   }
+
   selectAllChips() {
     this.isSelectAll = true;
-    this.branchObj$.subscribe(res => {
-      this.selectedBranches = JSON.parse(JSON.stringify(res));
+    this.isSelectAllBtn = false;
+    console.log(this.isSelectAll);
+    if (this.isSelectAll) {
+      this.branchObj$.subscribe(res => {
+        const b = JSON.parse(JSON.stringify(res));
 
-      const a = this.selectedBranches.map(x => x['id']);
-      console.log('selected branches are', a);
-    });
+        b.splice(0, b.length);
+        this.selectedBranches = JSON.parse(JSON.stringify(res));
+
+        const a = this.selectedBranches.map(x => x['id']);
+        console.log('selected branches are', a);
+        this.branchObj$ = of(b);
+      });
+    }
   }
   chipSelectFn(index, obj) {
+    this.isSelectAllBtn = false;
+    this.branchCount++;
+    console.log('branch count', this.branchCount);
     this.branchObj$.subscribe(branches => {
       const a = JSON.parse(JSON.stringify(branches));
 
@@ -237,6 +251,9 @@ export class CreateComponent implements OnInit {
       this.selectedBranches.push(obj);
       this.branchObj$ = of(a);
       this.cd.detectChanges();
+      if (a.length === 0) {
+        this.isSelectAllBtn = false;
+      }
     });
   }
   chipUnSelectFn(index, obj) {
@@ -245,6 +262,7 @@ export class CreateComponent implements OnInit {
 
     this.branchObj$.subscribe(res => {
       const a = JSON.parse(JSON.stringify(res));
+
       a.push(obj);
       this.branchObj$ = of(a);
     });
