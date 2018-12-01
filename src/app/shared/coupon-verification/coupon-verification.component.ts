@@ -16,10 +16,12 @@ export interface DialogData {
 })
 export class CouponVerificationComponent implements OnInit {
   selectionText;
+  branchHead = false;
   branchObj$: Observable<object>;
   selectedBranch: any;
   verifyForm: FormGroup;
   cId: string;
+  branchError = false;
   selectedIndex = -1;
   constructor(
     private formBuilder: FormBuilder,
@@ -35,6 +37,13 @@ export class CouponVerificationComponent implements OnInit {
 
   ngOnInit() {
     this.branchObj$ = this.campaignService.getBranches();
+    this.branchObj$.subscribe((res: any[]) => {
+      if (res.length === 0) {
+        this.branchHead = false;
+      } else {
+        this.branchHead = true;
+      }
+    });
   }
   selectBranch(index) {
     this.selectionText = '';
@@ -47,41 +56,84 @@ export class CouponVerificationComponent implements OnInit {
   }
   verifyCouponCode() {
     console.log('selected branch', this.selectedBranch);
-    if (this.selectedBranch === undefined) {
-      this.selectionText = '*Please Select your branch\n';
-      console.log('select a branch first');
-    } else {
-      if (this.verifyForm.get('couponCode').value === '') {
-        swal('Please Enter Coupon code');
-      } else {
-        this.campaignService
-          .verifyCouponCode(
-            this.cId,
-            this.verifyForm.get('couponCode').value,
-            this.selectedBranch
-          )
-          .subscribe(
-            res => {
-              console.log(res);
-              swal({
-                type: 'success',
-                title: 'Verified',
-                text: 'Coupon Code is Valid'
-              });
-              this.verifyForm.get('couponCode').setValue('');
-            },
-            err => {
-              console.log(err['error'].error.message);
-              swal({
-                type: 'error',
-                title: 'Oops...',
-                text: err['error'].error.message
-              });
+    this.branchObj$.subscribe((res2: any[]) => {
+      // const a = JSON.stringify(res2);
+      console.log('res2', res2);
+      console.log('length of res2', res2.length);
+      if (res2.length === 0) {
+        this.branchError = false;
 
-              this.verifyForm.get('couponCode').setValue('');
-            }
-          );
+        if (this.verifyForm.get('couponCode').value === '') {
+          swal('Please Enter Coupon code');
+        } else {
+          this.campaignService
+            .verifyCouponCode(
+              this.cId,
+              this.verifyForm.get('couponCode').value,
+              this.selectedBranch
+            )
+            .subscribe(
+              res => {
+                console.log(res);
+                swal({
+                  type: 'success',
+                  title: 'Verified',
+                  text: 'Coupon Code is Valid'
+                });
+                this.verifyForm.get('couponCode').setValue('');
+              },
+              err => {
+                console.log(err['error'].error.message);
+                swal({
+                  type: 'error',
+                  title: 'Oops...',
+                  text: err['error'].error.message
+                });
+
+                this.verifyForm.get('couponCode').setValue('');
+              }
+            );
+        }
+      } else {
+        this.branchError = true;
+
+        if (this.selectedBranch === undefined) {
+          this.selectionText = '*Please Select your branch\n';
+          console.log('select a branch first');
+        } else {
+          if (this.verifyForm.get('couponCode').value === '') {
+            swal('Please Enter Coupon code');
+          } else {
+            this.campaignService
+              .verifyCouponCode(
+                this.cId,
+                this.verifyForm.get('couponCode').value,
+                this.selectedBranch
+              )
+              .subscribe(
+                res => {
+                  console.log(res);
+                  swal({
+                    type: 'success',
+                    title: 'Verified',
+                    text: 'Coupon Code is Valid'
+                  });
+                  this.verifyForm.get('couponCode').setValue('');
+                },
+                err => {
+                  console.log(err['error'].error.message);
+                  swal({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: err['error'].error.message
+                  });
+
+                  this.verifyForm.get('couponCode').setValue('');
+                }
+              );
+          }
+        }
       }
-    }
+    });
   }
 }

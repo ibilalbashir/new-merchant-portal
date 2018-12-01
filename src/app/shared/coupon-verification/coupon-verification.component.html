@@ -1,7 +1,7 @@
 <div class="md-dialog-container">
   <form class="text-center" [formGroup]="verifyForm">
     <h2>Coupon code Verification</h2>
-    <p>Select your branch</p>
+    <p *ngIf="branchHead">Select your branch</p>
     <mat-dialog-content>
       <mat-chip-list>
         <mat-chip [ngClass]="{'bg-success': i === selectedIndex}" *ngFor="let row of (branchObj$ | async); let i = index" [value]="row?.id" (click)="selectBranch(i)">{{row?.location}}</mat-chip>
@@ -13,7 +13,7 @@
     </mat-dialog-content>
     <div class="row">
       <div class="col-6">
-        <p id="selectionParagraph">{{selectionText}}</p>
+        <p id="selectionParagraph" *ngIf="branchError">{{selectionText}}</p>
       </div>
     </div>
     <mat-dialog-actions>

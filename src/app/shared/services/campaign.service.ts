@@ -99,6 +99,7 @@ export class CampaignService {
       }/Campaigns/${id}/verify-coupon?code=${code}&branchId=${branchId}`
     );
   }
+
   getBranches(): Observable<Object> {
     return this.http.get(
       `${this.url}/Merchants/${this.merchantId}/branches?access_token=${
