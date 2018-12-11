@@ -83,7 +83,8 @@ export class CreateComponent implements OnInit {
     startDate: '',
     termsAndConditions: '',
     title: '',
-    createdOn: new Date()
+    createdOn: new Date(),
+    isComingSoon: false
   };
   discountAmount;
   discountType;
@@ -210,7 +211,9 @@ export class CreateComponent implements OnInit {
             discountType: res['discountType'].baseDiscount,
             discountUtilization: res['discountUtilization'].user['type'],
             number: res['discountUtilization'].user['number'],
-            baseDiscountAmount: res['discountAmount'].baseDiscountAmount
+            baseDiscountAmount: res['discountAmount'].baseDiscountAmount,
+            selectedChips: [],
+            nonSelectedChips: []
           });
           console.log(
             ' this is number of weeks',
@@ -406,6 +409,7 @@ export class CreateComponent implements OnInit {
         'ambassadorIds'
       ).value;
     }
+    this.payloadObj.isComingSoon = false;
     const ids = this.selectedBranches.map(x => x['id']);
 
     this.payloadObj.branchIds = ids;

@@ -3,7 +3,7 @@
     <h2>Coupon code Verification</h2>
     <p *ngIf="branchHead">Select your branch</p>
     <mat-dialog-content>
-      <mat-chip-list>
+      <mat-chip-list *ngIf="totalBranches">
         <mat-chip [ngClass]="{'bg-success': i === selectedIndex}" *ngFor="let row of (branchObj$ | async); let i = index" [value]="row?.id" (click)="selectBranch(i)">{{row?.location}}</mat-chip>
       </mat-chip-list>
 

@@ -17,6 +17,8 @@ export interface DialogData {
 export class CouponVerificationComponent implements OnInit {
   selectionText;
   branchHead = false;
+  singleBranch;
+  totalBranches = false;
   branchObj$: Observable<object>;
   selectedBranch: any;
   verifyForm: FormGroup;
@@ -38,10 +40,14 @@ export class CouponVerificationComponent implements OnInit {
   ngOnInit() {
     this.branchObj$ = this.campaignService.getBranches();
     this.branchObj$.subscribe((res: any[]) => {
-      if (res.length === 0) {
+      if (res.length === 1) {
         this.branchHead = false;
+        this.singleBranch = res[0]['id'];
+
+        this.totalBranches = false;
       } else {
         this.branchHead = true;
+        this.totalBranches = true;
       }
     });
   }
@@ -60,7 +66,7 @@ export class CouponVerificationComponent implements OnInit {
       // const a = JSON.stringify(res2);
       console.log('res2', res2);
       console.log('length of res2', res2.length);
-      if (res2.length === 0) {
+      if (res2.length === 1) {
         this.branchError = false;
 
         if (this.verifyForm.get('couponCode').value === '') {
@@ -70,7 +76,7 @@ export class CouponVerificationComponent implements OnInit {
             .verifyCouponCode(
               this.cId,
               this.verifyForm.get('couponCode').value,
-              this.selectedBranch
+              this.singleBranch
             )
             .subscribe(
               res => {
