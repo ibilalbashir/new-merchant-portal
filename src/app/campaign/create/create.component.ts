@@ -139,7 +139,7 @@ export class CreateComponent implements OnInit {
       termsAndConditions: ['', Validators.required],
       campaignType: ['', Validators.required],
       startDate: [new Date(), Validators.required],
-      noOfWeeks: ['', Validators.required],
+      // noOfWeeks: ['', Validators.required],
       discountType: ['', Validators.required],
       discountUtilization: ['', Validators.required],
       categoryId: ['', Validators.required],
@@ -207,7 +207,7 @@ export class CreateComponent implements OnInit {
             categoryId: res['categoryId'],
             campaignType: res['campaignType'],
             startDate: res['startDate'],
-            noOfWeeks: res['noOfWeeks'],
+            // noOfWeeks: res['noOfWeeks'],
             discountType: res['discountType'].baseDiscount,
             discountUtilization: res['discountUtilization'].user['type'],
             number: res['discountUtilization'].user['number'],
@@ -533,7 +533,8 @@ export class CreateComponent implements OnInit {
     this.payloadObj.isRejected = false;
     const temp = JSON.parse(localStorage.getItem('user'));
     this.payloadObj.merchantId = temp['userId'];
-    this.payloadObj.noOfWeeks = this.firstFormGroup.get('noOfWeeks').value;
+    this.payloadObj.noOfWeeks = 100;
+    // this.firstFormGroup.get('noOfWeeks').value;
     this.payloadObj.startDate = this.firstFormGroup.get('startDate').value;
     this.payloadObj.termsAndConditions = this.firstFormGroup.get(
       'termsAndConditions'

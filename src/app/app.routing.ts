@@ -62,6 +62,10 @@ export const AppRoutes: Routes = [
       {
         path: '',
         loadChildren: './timeline/timeline.module#TimelineModule'
+      },
+      {
+        path: 'analytics',
+        loadChildren: './analytics/analytics.module#AnalyticsModule'
       }
     ]
   },

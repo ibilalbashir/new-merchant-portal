@@ -3,29 +3,44 @@
     <h2>Coupon code Verification</h2>
     <p *ngIf="branchHead">Select your branch</p>
     <mat-dialog-content>
-      <mat-chip-list *ngIf="totalBranches">
-        <mat-chip [ngClass]="{'bg-success': i === selectedIndex}" *ngFor="let row of (branchObj$ | async); let i = index" [value]="row?.id" (click)="selectBranch(i)">{{row?.location}}</mat-chip>
+      <mat-chip-list
+        *ngIf="totalBranches"
+        style="display: flex;
+      flex-direction: row;
+      justify-content: center;"
+      >
+        <mat-chip
+          [ngClass]="{ 'bg-success': i === selectedIndex }"
+          *ngFor="let row of (branchObj$ | async); let i = index"
+          [value]="row?.id"
+          (click)="selectBranch(i)"
+          >{{ row?.location }}</mat-chip
+        >
       </mat-chip-list>
 
-      <hr>
+      <hr />
 
-      <input type="text" placeholder="Enter Coupon Code" formControlName="couponCode">
+      <input
+        type="text"
+        placeholder="Enter Coupon Code"
+        formControlName="couponCode"
+      />
     </mat-dialog-content>
     <div class="row">
       <div class="col-6">
-        <p id="selectionParagraph" *ngIf="branchError">{{selectionText}}</p>
+        <p id="selectionParagraph" *ngIf="branchError">{{ selectionText }}</p>
       </div>
     </div>
     <mat-dialog-actions>
-
-
-
-
-      <button mat-raised-button (click)="verifyCouponCode()" class="btn btn-success">Verify
+      <button
+        mat-raised-button
+        (click)="verifyCouponCode()"
+        class="btn btn-success"
+      >
+        Verify
       </button>
 
       <button mat-button mat-dialog-close>cancel</button>
-
     </mat-dialog-actions>
   </form>
 </div>
