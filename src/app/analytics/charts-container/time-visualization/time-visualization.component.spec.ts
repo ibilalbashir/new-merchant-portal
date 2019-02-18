@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FiltersComponent } from './filters.component';
+import { TimeVisualizationComponent } from './time-visualization.component';
 
-describe('FiltersComponent', () => {
-  let component: FiltersComponent;
-  let fixture: ComponentFixture<FiltersComponent>;
+describe('TimeVisualizationComponent', () => {
+  let component: TimeVisualizationComponent;
+  let fixture: ComponentFixture<TimeVisualizationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FiltersComponent ]
+      declarations: [ TimeVisualizationComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FiltersComponent);
+    fixture = TestBed.createComponent(TimeVisualizationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,32 +1,70 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <app-filters></app-filters>
+      <!-- <div class="container filters">
+        <div class="row">
+          <div class="col-3">
+            <mat-form-field>
+              <input matInput formControlName="date" [matDatepicker]="picker" placeholder="Choose a date" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-3">
+            <mat-form-field>
+              <mat-select placeholder="Select Branch" (selectionChange)="branchSelectionFn($event)">
+                <mat-option *ngFor="let row of ($getBranches | async)" [value]="row?.id">
+                  {{ row?.location }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-3">
+            <mat-form-field>
+              <mat-select placeholder="Select Campaign" (selectionChange)="campaignSelectionFn($event)">
+                <mat-option *ngFor="let row of ($getCampaigns | async)" [value]="row?.id">
+                  {{ row?.title }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-3">
+            <mat-form-field>
+              <mat-select placeholder="Filter by">
+                <mat-option> Day </mat-option>
+                <mat-option> Week </mat-option>
+                <mat-option> Month </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <!-- <div class="row activity">
+    <div class="col-6"><app-branch-activity></app-branch-activity></div>
+    <div class="col-6"><app-campaign-activity></app-campaign-activity></div>
+  </div> -->
+  <div class="row">
+    <!-- <div class="col-6"><app-gender-chart></app-gender-chart></div> -->
+    <div class="col-12">
+      <app-coupon-chart></app-coupon-chart>
     </div>
 
   </div>
-  <div class="row activity">
+
+  <div class="row" style="padding-top: 30px;">
     <div class="col-6">
-      <app-branch-activity></app-branch-activity>
+      <app-time-visualization></app-time-visualization>
     </div>
     <div class="col-6">
       <app-campaign-activity></app-campaign-activity>
     </div>
-
-
-  </div>
-  <div class="row">
-    <div class="col-6">
-      <app-gender-chart></app-gender-chart>
-    </div>
-    <div class="col-6">
-      <app-coupon-chart></app-coupon-chart>
-    </div>
-
   </div>
   <div class="row">
     <div class="col-12">
       <app-universities></app-universities>
     </div>
   </div>
+
 </div>

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { AnalyticsRoutingModule } from './analytics-routing.module';
 import { ChartsContainerComponent } from './charts-container/charts-container.component';
-import { FiltersComponent } from './charts-container/filters/filters.component';
 import { BranchActivityComponent } from './charts-container/branch-activity/branch-activity.component';
 import { CampaignActivityComponent } from './charts-container/campaign-activity/campaign-activity.component';
 import { FusionChartsModule } from 'angular-fusioncharts';
@@ -24,6 +23,7 @@ import {
 import { GenderChartComponent } from './charts-container/gender-chart/gender-chart.component';
 import { CouponChartComponent } from './charts-container/coupon-chart/coupon-chart.component';
 import { UniversitiesComponent } from './charts-container/universities/universities.component';
+import { TimeVisualizationComponent } from './charts-container/time-visualization/time-visualization.component';
 
 // Add dependencies to FusionChartsModule
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
@@ -41,12 +41,12 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
   ],
   declarations: [
     ChartsContainerComponent,
-    FiltersComponent,
     BranchActivityComponent,
     CampaignActivityComponent,
     GenderChartComponent,
     CouponChartComponent,
-    UniversitiesComponent
+    UniversitiesComponent,
+    TimeVisualizationComponent
   ]
 })
 export class AnalyticsModule {}

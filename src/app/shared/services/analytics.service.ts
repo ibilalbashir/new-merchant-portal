@@ -25,4 +25,28 @@ export class AnalyticsService {
       }`
     );
   }
+  getCouponByCampaignId(campaignId): Observable<object> {
+    return this.http.get(
+      `${this.url}/Campaigns/${campaignId}/coupons?access_token=${
+        SharedClass.access_token
+      }`
+    );
+  }
+  getCampaignsWithCoupons(merchantId) {
+    return this.http.get(
+      `${
+        this.url
+      }/Merchants/${merchantId}/campaigns?filter[include]=coupons&access_token=${
+        SharedClass.access_token
+      }`
+    );
+  }
+
+  getUserById(userId) {
+    return this.http.get(
+      `${this.url}/Uninamausers/${userId}?access_token=${
+        SharedClass.access_token
+      }`
+    );
+  }
 }
