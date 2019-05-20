@@ -1,8 +1,9 @@
 import { map } from 'rxjs/operators';
 import { AnalyticsService } from './../../../shared/services/analytics.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
+import * as FusionCharts from 'fusioncharts';
+import * as Moment from 'moment';
 @Component({
   selector: 'app-campaign-activity',
   templateUrl: './campaign-activity.component.html',
@@ -12,35 +13,75 @@ export class CampaignActivityComponent implements OnInit {
   obj;
 
   merchantId;
-  dataSource = {
-    chart: {
-      caption: 'Camapign Activity',
-      subCaption: '',
-      xAxisName: 'Day',
-      yAxisName: 'Coupons',
-      lineThickness: '2',
-      theme: 'fusion'
-    },
-    data: [],
-    trendlines: [
-      {
-        line: [
-          {
-            startvalue: '1',
-            color: '#1aaf5d',
-            displayvalue: '',
-            valueOnRight: '1',
-            thickness: '2'
-          }
-        ]
-      }
-    ]
-  };
+  // dataSource = {
+  //   data: [],
+  //   yAxis: {
+  //     plot: [{ value: 'Number of Coupons' }]
+  //   },
+  //   caption: { text: 'Campaign Activity' }
+  // chart: {
+  //   caption: 'Camapign Activity',
+  //   subCaption: '',
+  //   xAxisName: 'Day',
+  //   yAxisName: 'Coupons',
+  //   lineThickness: '2',
+  //   theme: 'fusion'
+  // },
+
+  // trendlines: [
+  //   {
+  //     line: [
+  //       {
+  //         startvalue: '1',
+  //         color: '#1aaf5d',
+  //         displayvalue: '',
+  //         valueOnRight: '1',
+  //         thickness: '2'
+  //       }
+  //     ]
+  //   }
+  // ]
+  // };
   $campaignsWithCoupons;
   couponsArray = [];
   dates = [];
+  tArray = [];
+  dataSource: any;
+  type: string;
+  width: string;
+  height: string;
+  constructor(private analyticsService: AnalyticsService) {
 
-  constructor(private analyticsService: AnalyticsService) {}
+    this.type = 'timeseries';
+    this.width = '100%';
+    this.height = '400';
+    // This is the dataSource of the chart
+    this.dataSource = {
+      // Initially data is set as null
+      data: null,
+
+      caption: {
+        text: 'Sales Analysis'
+      },
+      subcaption: {
+        text: 'Grocery'
+      },
+      yAxis: [
+        {
+          plot: {
+            value: 'Grocery Sales Value',
+            type: "column"
+
+          },
+          title: 'Sale Value'
+        }
+      ]
+
+    }
+
+
+  }
+
 
   ngOnInit() {
     const temp = JSON.parse(localStorage.getItem('user'));
@@ -101,10 +142,31 @@ export class CampaignActivityComponent implements OnInit {
       temp = '';
       count = 0;
     }
+
     Object.keys(tempObj).forEach(key => {
-      this.dataSource.data.push({ label: key, value: tempObj[key] });
+      const arr = [Moment(key).format('DD-MMM-YY'), tempObj[key]]
+      this.tArray.push(arr);
+      console.log('tArray', this.tArray)
     });
+    console.log(this.tArray);
+    const dataArray = this.tArray;
+    const schema = [{ name: "Time", type: "date", format: "%d-%b-%y", column: "Time", index: 0 },
+    { name: "Grocery Sales Value", type: "number", column: "Grocery Sales Value", index: 1 }]
+    const fusionDataStore = new FusionCharts.DataStore();
+    // After that we are creating a DataTable by passing our data and schema as arguments
+    const fusionTable = fusionDataStore.createDataTable(dataArray, schema);
+    // Afet that we simply mutated our timeseries datasource by attaching the above
+    // DataTable into its data property.
+
+    this.dataSource.data = fusionTable;
+    console.log('fusion table', this.dataSource.data)
+    //this.dataSource.data = this.tArray;
+    console.log('datasoruce', this.dataSource)
     // console.log('tempObj is ', tempObj);
-    // console.log('dataSource is ', this.dataSource);
+    console.log('dataSource is ', this.dataSource);
+
+
   }
+
+
 }

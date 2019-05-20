@@ -88,7 +88,7 @@ export class TimeVisualizationComponent implements OnInit {
         const mapped = Object.keys(res).map(key => ({
           value: res[key]
         }));
-        console.log('mapped is', mapped);
+        // console.log('mapped is', mapped);
         mapped.forEach(element => {
           if (element.value['coupons'].length !== 0) {
             for (let i = 0; i < element.value['coupons'].length; i++) {
@@ -109,14 +109,14 @@ export class TimeVisualizationComponent implements OnInit {
       return e['usedOn'] ? e['usedOn'] : null;
     });
     tArray = tArray.map(e => e).filter(e => e !== null);
-    console.log('tArray is ', tArray);
+    // console.log('tArray is ', tArray);
     for (let i = 0; i < tArray.length; i++) {
       const now = new Date(tArray[i]);
 
-      console.log(
-        'time is',
-        now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds()
-      );
+      // console.log(
+      //   'time is',
+      //   now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds()
+      // );
       const hrs = now.getHours();
       if (hrs >= 10 && hrs < 12) {
         this.dataSource.data[0]['value'] += 1;
@@ -137,6 +137,6 @@ export class TimeVisualizationComponent implements OnInit {
       }
     }
 
-    console.log('dataSource is:', this.dataSource.data);
+    // console.log('dataSource is:', this.dataSource);
   }
 }

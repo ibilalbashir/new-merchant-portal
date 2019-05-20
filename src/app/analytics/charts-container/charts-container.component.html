@@ -1,6 +1,20 @@
 <div class="container">
-  <div class="row">
+  <div class="row" style="padding-top: 70px;">
     <div class="col-12">
+      <mat-tab-group>
+        <mat-tab label="Coupons">
+          <app-coupon-chart></app-coupon-chart>
+        </mat-tab>
+        <mat-tab label="Time Visualization">
+          <app-time-visualization></app-time-visualization>
+        </mat-tab>
+        <mat-tab label="Campaign Activity">
+          <app-campaign-activity></app-campaign-activity>
+        </mat-tab>
+        <mat-tab label="Universities">
+          <app-universities></app-universities>
+        </mat-tab>
+      </mat-tab-group>
       <!-- <div class="container filters">
         <div class="row">
           <div class="col-3">
@@ -45,15 +59,15 @@
     <div class="col-6"><app-branch-activity></app-branch-activity></div>
     <div class="col-6"><app-campaign-activity></app-campaign-activity></div>
   </div> -->
-  <div class="row">
-    <!-- <div class="col-6"><app-gender-chart></app-gender-chart></div> -->
+  <!-- <div class="row">
+    
     <div class="col-12">
       <app-coupon-chart></app-coupon-chart>
     </div>
 
-  </div>
+  </div> -->
 
-  <div class="row" style="padding-top: 30px;">
+  <!-- <div class="row" style="padding-top: 30px;">
     <div class="col-6">
       <app-time-visualization></app-time-visualization>
     </div>
@@ -65,6 +79,6 @@
     <div class="col-12">
       <app-universities></app-universities>
     </div>
-  </div>
+  </div> -->
 
 </div>

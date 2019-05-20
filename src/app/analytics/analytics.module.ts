@@ -12,13 +12,20 @@ import { MatTableModule } from '@angular/material/table';
 // Load FusionCharts
 import * as FusionCharts from 'fusioncharts';
 // Load Charts module
-import * as Charts from 'fusioncharts/fusioncharts.charts';
+import * as TimeChart from 'fusioncharts/fusioncharts.timeseries';
+import * as  Chart from 'fusioncharts/fusioncharts.charts';
 // Load fusion theme
 import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
+TimeChart(FusionCharts);
+Chart(FusionCharts);
+FusionTheme(FusionCharts);
+
+
 import {
   MatFormFieldModule,
   MatInputModule,
-  MatSelectModule
+  MatSelectModule,
+  MatTabsModule
 } from '@angular/material';
 import { GenderChartComponent } from './charts-container/gender-chart/gender-chart.component';
 import { CouponChartComponent } from './charts-container/coupon-chart/coupon-chart.component';
@@ -26,7 +33,7 @@ import { UniversitiesComponent } from './charts-container/universities/universit
 import { TimeVisualizationComponent } from './charts-container/time-visualization/time-visualization.component';
 
 // Add dependencies to FusionChartsModule
-FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
+FusionChartsModule.fcRoot(FusionCharts);
 
 @NgModule({
   imports: [
@@ -37,7 +44,8 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
     MatDatepickerModule,
     MatInputModule,
     MatSelectModule,
-    MatTableModule
+    MatTableModule,
+    MatTabsModule
   ],
   declarations: [
     ChartsContainerComponent,
@@ -49,4 +57,4 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
     TimeVisualizationComponent
   ]
 })
-export class AnalyticsModule {}
+export class AnalyticsModule { }
